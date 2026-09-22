@@ -1,6 +1,5 @@
-"""Job source adapters live here.
+"""Job source adapters.
 
-M2 defines JobSourcePort and the registry. Concrete HTTP adapters (Adzuna
-included, as an optional validation adapter only) are later milestones.
-No vendor is imported or registered from this package today.
+Concrete HTTP adapters live in subpackages (currently optional Adzuna).
+None are registered unless the composition root adds them to JobSourceRegistry.
 """

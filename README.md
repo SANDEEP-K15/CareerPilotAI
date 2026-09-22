@@ -10,11 +10,14 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M2 — Job source abstraction.**
+**M3 — First job-source adapter (optional Adzuna).**
 
-Not yet implemented: real job providers (including Adzuna), search API,
-matching, agents, Temporal workers, LLM adapters, Hermes, resumes, or
-applications.
+Not yet implemented: additional providers, search API, matching, agents,
+Temporal workers, LLM adapters, Hermes, resumes, or applications.
+
+Adzuna is optional. Without `ADZUNA__APP_ID` / `ADZUNA__APP_KEY` the
+platform still boots; the adapter reports unavailability instead of
+inventing jobs. See [Adzuna notes](docs/providers/adzuna.md).
 
 ## Principles
 
@@ -52,7 +55,7 @@ src/careerpilot/
   domain/            Canonical User and Job — provider-neutral
   application/       Use cases against repository ports
   ports/             Clock, IDs, repositories (JobSourcePort in M2)
-  infrastructure/    SQLAlchemy/Postgres adapters, system clock
+  infrastructure/    Postgres adapters; optional Adzuna JobSourcePort
   config/            pydantic-settings
   api/               FastAPI delivery (later)
   worker/            Temporal worker (later)
@@ -65,6 +68,7 @@ tests/               Unit, integration, and contract tests
 - [Implementation plan](docs/implementation-plan.md)
 - [Architecture](docs/architecture/overview.md)
 - [ADRs](docs/adr/)
+- [Adzuna provider](docs/providers/adzuna.md)
 - [Database](database/README.md)
 
 ## License

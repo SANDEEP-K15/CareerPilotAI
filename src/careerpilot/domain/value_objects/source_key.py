@@ -1,7 +1,7 @@
 """Provider-neutral job source identifier.
 
 This is not JobSourcePort (M2) and is not a catalog of vendors. Any adapter
-may persist a source key such as ``adzuna`` later without the domain
+may persist a source key such as ``example_board`` later without the domain
 knowing those vendors exist.
 """
 

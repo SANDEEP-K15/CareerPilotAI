@@ -27,8 +27,8 @@ infrastructure (adapters: job sources, Postgres, Temporal, LLM, …)
 - **ports** — repositories, clocks, and `JobSourcePort`. Search returns
   `RawJob` pages, not persisted `Job` rows (ADR 0015).
 - **infrastructure** — SQLAlchemy/Postgres adapters and system clock.
-  Schema is applied only by Alembic. Real job-source HTTP adapters start
-  in M3; none are registered by default.
+  Schema is applied only by Alembic. Optional Adzuna HTTP adapter lives
+  under `infrastructure/jobsources/adzuna/` and is not auto-registered.
 - **application** — use cases and the in-process `JobSourceRegistry`.
   Vendor names are not hard-coded. One source failure does not abort
   other registered sources.

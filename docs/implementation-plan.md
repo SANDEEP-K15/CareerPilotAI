@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M2 complete** after verification in this repository. Do not start
-M3 without explicit approval.
+Status: **M3 complete** after verification in this repository. Do not start
+M4 without explicit approval.
 
 ## Product goal
 
@@ -24,7 +24,7 @@ be present, or the conceptual primary source of jobs.
 | M0 | Architecture and repository foundation | Complete |
 | M1 | Core domain, configuration, PostgreSQL/Alembic | Complete |
 | M2 | JobSourcePort, registry, provider errors | Complete |
-| M3 | First JobSource adapter (Adzuna, validation only) | Not started |
+| M3 | First JobSource adapter (Adzuna, validation only) | Complete |
 | M4 | Normalization and deterministic deduplication | Not started |
 | M5 | Job search API | Not started |
 | M6 | Career profile and resume foundation | Not started |
@@ -74,10 +74,18 @@ be present, or the conceptual primary source of jobs.
 - In-memory fake source for unit/contract tests
 - Canonical `Job` unchanged; no HTTP providers
 
-## Explicitly out of M2
+## M3 scope (complete)
 
-Real job providers (including Adzuna), search HTTP API, matching, agents,
-Temporal, Hermes, LLM, resumes, applications, browser automation.
+- Optional Adzuna `JobSourcePort` adapter in infrastructure only
+- Maps documented search JSON to `RawJob`
+- Normalizes HTTP/timeout/malformed errors to `JobSourceError`
+- Credentials via `ADZUNA__*` environment variables; missing keys do not boot-fail
+- Mocked HTTP unit tests; **no live API validation** without credentials
+
+## Explicitly out of M3
+
+Other providers, search HTTP API, matching, agents, Temporal, Hermes, LLM,
+resumes, applications, browser automation, `RawJob` → `Job` persistence (M4).
 
 ## First production slice
 

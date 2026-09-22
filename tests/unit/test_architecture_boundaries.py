@@ -67,3 +67,13 @@ def test_application_does_not_import_infrastructure_or_frameworks() -> None:
             ):
                 violations.append(f"{path.relative_to(_ROOT)} imports {banned}")
     assert violations == []
+
+
+def test_domain_and_application_do_not_mention_adzuna() -> None:
+    hits: list[str] = []
+    for package in ("domain", "application", "ports"):
+        for path in _python_files(package):
+            text = path.read_text(encoding="utf-8")
+            if "adzuna" in text.lower():
+                hits.append(str(path.relative_to(_ROOT)))
+    assert hits == []

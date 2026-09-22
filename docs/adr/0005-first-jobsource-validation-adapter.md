@@ -27,7 +27,10 @@ mistaken for the product or for a guaranteed primary source.
 
 ## Consequences
 
-- M3 adds `infrastructure/jobsources/adzuna/` (or equivalent) only.
+- M3 adds `infrastructure/jobsources/adzuna/` only.
+- Country is adapter configuration (`ADZUNA__COUNTRY`), not a domain field.
+- Adzuna `remote` filtering is not documented; `JobSearchQuery.remote_only`
+  is ignored by this adapter.
 - Tests for matching, dedupe, and daily recommendations use fakes, not
   Adzuna.
 - Docs and config treat Adzuna as optional.
