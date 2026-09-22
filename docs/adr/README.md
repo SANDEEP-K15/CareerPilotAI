@@ -17,4 +17,4 @@ Supersede with a new ADR.
 | [0010](0010-explicit-permissions.md) | Explicit permissions | Accepted |
 | [0011](0011-provider-reported-cost.md) | Provider-reported cost only | Accepted |
 | [0012](0012-structured-errors.md) | Structured domain errors | Accepted |
-| [0014](0014-utc-uuid-identity.md) | UUID keys and UTC timestamps | Accepted |
+| [0015](0015-jobsourceport-rawjob.md) | JobSourcePort returns RawJob pages | Accepted |

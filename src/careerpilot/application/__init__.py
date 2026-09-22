@@ -6,6 +6,12 @@ from careerpilot.application.errors import (
     JobNotFoundError,
     UserNotFoundError,
 )
+from careerpilot.application.job_sources import (
+    DuplicateJobSourceRegistrationError,
+    JobSourceRegistry,
+    SearchRegisteredSourcesUseCase,
+    UnknownJobSourceError,
+)
 from careerpilot.application.use_cases.get_job import GetJobUseCase
 from careerpilot.application.use_cases.get_user import GetUserUseCase
 from careerpilot.application.use_cases.persist_job import PersistJobCommand, PersistJobUseCase
@@ -13,13 +19,17 @@ from careerpilot.application.use_cases.register_user import RegisterUserCommand,
 
 __all__ = [
     "ApplicationError",
+    "DuplicateJobSourceRegistrationError",
     "GetJobUseCase",
     "GetUserUseCase",
     "JobAlreadyExistsError",
     "JobNotFoundError",
+    "JobSourceRegistry",
     "PersistJobCommand",
     "PersistJobUseCase",
     "RegisterUserCommand",
     "RegisterUserUseCase",
+    "SearchRegisteredSourcesUseCase",
+    "UnknownJobSourceError",
     "UserNotFoundError",
 ]

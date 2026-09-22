@@ -1,5 +1,6 @@
-"""Job source adapters and registry implementations (from M2/M3).
+"""Job source adapters live here.
 
-No adapter is implemented in M0. Future adapters (Adzuna included) are
-interchangeable implementations of JobSourcePort, not product dependencies.
+M2 defines JobSourcePort and the registry. Concrete HTTP adapters (Adzuna
+included, as an optional validation adapter only) are later milestones.
+No vendor is imported or registered from this package today.
 """

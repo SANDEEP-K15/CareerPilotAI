@@ -24,9 +24,14 @@ infrastructure (adapters: job sources, Postgres, Temporal, LLM, …)
   origin identifier, not a vendor enum.
 - **application** — use cases and policies. Depends on domain
   and ports only.
-- **ports** — repositories and clocks in M1. `JobSourcePort` remains M2.
+- **ports** — repositories, clocks, and `JobSourcePort`. Search returns
+  `RawJob` pages, not persisted `Job` rows (ADR 0015).
 - **infrastructure** — SQLAlchemy/Postgres adapters and system clock.
-  Schema is applied only by Alembic.
+  Schema is applied only by Alembic. Real job-source HTTP adapters start
+  in M3; none are registered by default.
+- **application** — use cases and the in-process `JobSourceRegistry`.
+  Vendor names are not hard-coded. One source failure does not abort
+  other registered sources.
 - **config** — environment-backed settings. Production/staging reject a
   placeholder `SECURITY__SECRET_KEY`.
 - **api / worker** — delivery. Thin. Not implemented in M1.

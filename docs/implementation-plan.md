@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M1 complete** after verification in this repository. Do not start
-M2 without explicit approval.
+Status: **M2 complete** after verification in this repository. Do not start
+M3 without explicit approval.
 
 ## Product goal
 
@@ -23,7 +23,7 @@ be present, or the conceptual primary source of jobs.
 |---|---|---|
 | M0 | Architecture and repository foundation | Complete |
 | M1 | Core domain, configuration, PostgreSQL/Alembic | Complete |
-| M2 | JobSourcePort, registry, provider errors | Not started |
+| M2 | JobSourcePort, registry, provider errors | Complete |
 | M3 | First JobSource adapter (Adzuna, validation only) | Not started |
 | M4 | Normalization and deterministic deduplication | Not started |
 | M5 | Job search API | Not started |
@@ -65,11 +65,19 @@ be present, or the conceptual primary source of jobs.
 - Settings with production secret validation
 - Unit tests plus optional Postgres integration tests
 
-## Explicitly out of M1
+## M2 scope (complete)
 
-JobSourcePort implementations (including Adzuna), search, matching,
-agents, Temporal worker, Hermes, LLM, resumes, applications, browser
-automation, Redis, profiles, recommendations.
+- `JobSourcePort`, `JobSearchQuery`, `RawJob`, `JobSearchPage`
+- Normalized `JobSourceError` plus `normalize_job_source_failure`
+- `JobSourceRegistry` with duplicate/unknown source errors
+- `SearchRegisteredSourcesUseCase` isolates per-source failures
+- In-memory fake source for unit/contract tests
+- Canonical `Job` unchanged; no HTTP providers
+
+## Explicitly out of M2
+
+Real job providers (including Adzuna), search HTTP API, matching, agents,
+Temporal, Hermes, LLM, resumes, applications, browser automation.
 
 ## First production slice
 

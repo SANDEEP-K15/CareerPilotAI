@@ -10,17 +10,18 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M1 — Core domain, configuration, PostgreSQL/Alembic.**
+**M2 — Job source abstraction.**
 
-Not yet implemented: job providers, search API, matching, agents, Temporal
-workers, LLM adapters, Hermes, resumes, or applications.
+Not yet implemented: real job providers (including Adzuna), search API,
+matching, agents, Temporal workers, LLM adapters, Hermes, resumes, or
+applications.
 
 ## Principles
 
 - Deterministic software for deterministic work. AI only where reasoning
   or semantic matching adds value.
 - Job discovery is provider-neutral. `JobSourcePort` and the registry are
-  the product boundary (M2+). Adzuna may be the first adapter used to
+  the product boundary. Adzuna may later be the first adapter used to
   *validate* that boundary; it is not a platform dependency and not the
   guaranteed source of jobs.
 - Never fabricate jobs, costs, or provider capabilities.
