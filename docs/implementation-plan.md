@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M4 complete** after verification in this repository. Do not start
-M5 without explicit approval.
+Status: **M5 complete** after verification in this repository. Do not start
+M6 without explicit approval.
 
 ## Product goal
 
@@ -26,7 +26,7 @@ be present, or the conceptual primary source of jobs.
 | M2 | JobSourcePort, registry, provider errors | Complete |
 | M3 | First JobSource adapter (Adzuna, validation only) | Complete |
 | M4 | Normalization and deterministic deduplication | Complete |
-| M5 | Job search API | Not started |
+| M5 | Job search API | Complete |
 | M6 | Career profile and resume foundation | Not started |
 | M7 | Deterministic matching engine | Not started |
 | M8 | Daily job discovery Temporal workflow | Not started |
@@ -104,6 +104,23 @@ resumes, applications, browser automation.
 Search HTTP API, matching, ranking, daily recommendations, user profile,
 agents, Temporal, LLM, Hermes, resumes, applications, browser automation,
 additional real providers.
+
+## M5 scope (complete)
+
+- FastAPI `POST /api/v1/jobs/search`
+- Request/response schemas (canonical Job DTO, not RawJob/ORM)
+- `SearchAndIngestJobsUseCase` over the registry + M4 ingest
+- Explicit `sources` selection; unknown source → API error
+- Partial provider failure does not drop other sources
+- Pagination from `JobSearchQuery`
+- `X-Request-ID` echo/generate only (no observability platform)
+- Tests against `InMemoryJobSource`; Adzuna is not called
+
+## Explicitly out of M5
+
+User profiles, resume processing, matching, ranking, daily recommendations,
+AI agents, Temporal, LLM, Hermes, browser automation, applications,
+additional job providers.
 
 ## First production slice
 

@@ -77,3 +77,15 @@ def test_domain_and_application_do_not_mention_adzuna() -> None:
             if "adzuna" in text.lower():
                 hits.append(str(path.relative_to(_ROOT)))
     assert hits == []
+
+
+def test_api_layer_does_not_mention_adzuna_or_import_orm_models() -> None:
+    hits: list[str] = []
+    for path in _python_files("api"):
+        text = path.read_text(encoding="utf-8")
+        if "adzuna" in text.lower():
+            hits.append(f"{path.relative_to(_ROOT)} mentions adzuna")
+        imported = _imported_modules(path)
+        if "careerpilot.infrastructure.persistence.postgres.models" in imported:
+            hits.append(f"{path.relative_to(_ROOT)} imports ORM models")
+    assert hits == []

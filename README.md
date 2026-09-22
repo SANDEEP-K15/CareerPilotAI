@@ -10,17 +10,17 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M4 — Normalization and deterministic deduplication.**
+**M5 — Job search HTTP API.**
 
-Not yet implemented: search API, matching, agents, Temporal workers, LLM
-adapters, Hermes, resumes, or applications.
+Not yet implemented: matching, agents, Temporal workers, LLM adapters,
+Hermes, resumes, user profiles, or applications.
 
-`IngestRawJobUseCase` maps provider-neutral `RawJob` values to canonical
-`Job` rows. Identity is `(source, external_id)`. See ADR 0016.
+`POST /api/v1/jobs/search` searches **registered** sources, ingests via M4,
+and returns canonical jobs. See [HTTP API](docs/api.md). The API does not
+call Adzuna (or any vendor) directly and does not hard-code country or role.
 
-Adzuna remains optional. Country for that adapter is `ADZUNA__COUNTRY`
-(default `gb`) and is search configuration, not a field on `Job`.
-See [Adzuna notes](docs/providers/adzuna.md).
+Adzuna remains optional adapter configuration (`ADZUNA__COUNTRY`, default
+`gb` on that adapter only). See [Adzuna notes](docs/providers/adzuna.md).
 
 ## Principles
 
@@ -60,7 +60,7 @@ src/careerpilot/
   ports/             Clock, IDs, repositories (JobSourcePort in M2)
   infrastructure/    Postgres adapters; optional Adzuna JobSourcePort
   config/            pydantic-settings
-  api/               FastAPI delivery (later)
+  api/               FastAPI delivery (`/api/v1`)
   worker/            Temporal worker (later)
 database/            Alembic migrations
 tests/               Unit, integration, and contract tests
@@ -71,6 +71,7 @@ tests/               Unit, integration, and contract tests
 - [Implementation plan](docs/implementation-plan.md)
 - [Architecture](docs/architecture/overview.md)
 - [ADRs](docs/adr/)
+- [HTTP API](docs/api.md)
 - [Adzuna provider](docs/providers/adzuna.md)
 - [Database](database/README.md)
 

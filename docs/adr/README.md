@@ -19,3 +19,4 @@ Supersede with a new ADR.
 | [0012](0012-structured-errors.md) | Structured domain errors | Accepted |
 | [0015](0015-jobsourceport-rawjob.md) | JobSourcePort returns RawJob pages | Accepted |
 | [0016](0016-rawjob-normalization-ingest.md) | RawJob → Job ingest and identity dedupe | Accepted |
+| [0017](0017-job-search-http-api.md) | Versioned job-search HTTP API | Accepted |

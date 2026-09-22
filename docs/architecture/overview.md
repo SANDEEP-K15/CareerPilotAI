@@ -35,7 +35,8 @@ infrastructure (adapters: job sources, Postgres, Temporal, LLM, …)
   other registered sources.
 - **config** — environment-backed settings. Production/staging reject a
   placeholder `SECURITY__SECRET_KEY`.
-- **api / worker** — delivery. Thin. Not implemented in M1.
+- **api / worker** — delivery. FastAPI under `/api/v1` (ADR 0017).
+  Workers remain later.
 
 ## Persistence (M1)
 
