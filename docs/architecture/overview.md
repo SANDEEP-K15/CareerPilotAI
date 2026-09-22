@@ -18,14 +18,24 @@ domain  ←  ports (interfaces)
 infrastructure (adapters: job sources, Postgres, Temporal, LLM, …)
 ```
 
-- **domain** — canonical Job, profile, recommendation, errors. No
-  frameworks. No provider schemas.
-- **application** — use cases. Talks to ports. Provider-neutral.
-- **ports** — `JobSourcePort` (M2), repositories, later LLM, workflows,
-  cost, notifications, browser.
-- **infrastructure** — the only place vendor SDKs and HTTP provider
-  clients live.
-- **api / worker** — delivery. Thin.
+- **domain** — entities, value objects, domain events, errors. No
+  frameworks. No provider schemas. M1 entities: `User` (identity) and
+  canonical `Job` (catalog; not user-owned). `SourceKey` is a generic
+  origin identifier, not a vendor enum.
+- **application** — use cases and policies. Depends on domain
+  and ports only.
+- **ports** — repositories and clocks in M1. `JobSourcePort` remains M2.
+- **infrastructure** — SQLAlchemy/Postgres adapters and system clock.
+  Schema is applied only by Alembic.
+- **config** — environment-backed settings. Production/staging reject a
+  placeholder `SECURITY__SECRET_KEY`.
+- **api / worker** — delivery. Thin. Not implemented in M1.
+
+## Persistence (M1)
+
+Tables: `users`, `jobs`. Unique `(source, external_id)` on jobs. Indexes
+on `content_hash`, `posted_at`, and `status`. No Redis. No profile,
+resume, match, recommendation, application, or cost tables yet.
 
 ## Job discovery
 

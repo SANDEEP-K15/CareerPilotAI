@@ -1,5 +1,6 @@
-"""Infrastructure adapters. This layer depends inward.
+"""Infrastructure adapters. Domain and application must not import this package."""
 
-Concrete job sources, persistence, LLM vendors, and Temporal clients belong
-here only. Adding a provider must not change domain or application packages.
-"""
+from careerpilot.infrastructure.clock import SystemClock
+from careerpilot.infrastructure.ids import Uuid4Generator
+
+__all__ = ["SystemClock", "Uuid4Generator"]

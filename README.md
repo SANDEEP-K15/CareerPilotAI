@@ -10,20 +10,21 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M0 — Architecture and repository foundation** (this commit).
+**M1 — Core domain, configuration, PostgreSQL/Alembic.**
 
-Not yet implemented: domain persistence, job providers, search, matching,
-agents, Temporal workers, LLM adapters, Hermes, resumes, or applications.
+Not yet implemented: job providers, search API, matching, agents, Temporal
+workers, LLM adapters, Hermes, resumes, or applications.
 
 ## Principles
 
 - Deterministic software for deterministic work. AI only where reasoning
   or semantic matching adds value.
 - Job discovery is provider-neutral. `JobSourcePort` and the registry are
-  the product boundary. Adzuna may be the first adapter used to *validate*
-  that boundary; it is not a platform dependency and not the guaranteed
-  source of jobs.
+  the product boundary (M2+). Adzuna may be the first adapter used to
+  *validate* that boundary; it is not a platform dependency and not the
+  guaranteed source of jobs.
 - Never fabricate jobs, costs, or provider capabilities.
+- Schema changes go through Alembic. Do not use `create_all()`.
 
 ## Local development
 
@@ -33,28 +34,29 @@ Prerequisites: [uv](https://docs.astral.sh/uv/), Docker, Python 3.12+.
 uv sync --dev
 cp .env.example .env
 docker compose -f docker/docker-compose.yml up -d
+uv run alembic -c database/alembic.ini upgrade head
 uv run pytest
 uv run ruff check .
 uv run mypy
 ```
 
-Postgres is available for later milestones. M0 does not run migrations or
-an API server.
+Integration tests run against local Postgres when it is reachable. They
+skip automatically if Postgres is down, unless `CAREERPILOT_RUN_INTEGRATION=1`
+is set (then missing Postgres is a failure).
 
 ## Layout
 
 ```
-src/careerpilot/     Application package (skeleton in M0)
-  domain/            Canonical domain — provider-neutral
-  application/       Use cases — provider-neutral
-  ports/             Interfaces including future JobSourcePort
-  infrastructure/    Adapters only (no concrete job source in M0)
+src/careerpilot/
+  domain/            Canonical User and Job — provider-neutral
+  application/       Use cases against repository ports
+  ports/             Clock, IDs, repositories (JobSourcePort in M2)
+  infrastructure/    SQLAlchemy/Postgres adapters, system clock
+  config/            pydantic-settings
   api/               FastAPI delivery (later)
   worker/            Temporal worker (later)
+database/            Alembic migrations
 tests/               Unit, integration, and contract tests
-evaluation/          AI evaluation (not unit tests; not implemented)
-docs/                Architecture, ADRs, implementation plan
-docker/              Compose (PostgreSQL only in M0)
 ```
 
 ## Documentation
@@ -62,6 +64,7 @@ docker/              Compose (PostgreSQL only in M0)
 - [Implementation plan](docs/implementation-plan.md)
 - [Architecture](docs/architecture/overview.md)
 - [ADRs](docs/adr/)
+- [Database](database/README.md)
 
 ## License
 

@@ -1,7 +1,7 @@
 """CareerPilot AI application package.
 
-M0 is repository and tooling foundation only. Domain logic, providers,
-workflows, and agents are intentionally absent until their milestones.
+M1 adds the domain model, configuration, and PostgreSQL persistence
+foundation. Job providers, agents, and APIs are still later milestones.
 """
 
 __all__ = ["__version__"]

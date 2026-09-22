@@ -9,6 +9,25 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: careerpilot
+          POSTGRES_PASSWORD: careerpilot
+          POSTGRES_DB: careerpilot
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U careerpilot -d careerpilot"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      ENVIRONMENT: test
+      DATABASE__URL: postgresql+asyncpg://careerpilot:careerpilot@localhost:5432/careerpilot
+      SECURITY__SECRET_KEY: ci-test-secret-key-not-for-production
+      CAREERPILOT_RUN_INTEGRATION: "1"
     steps:
       - uses: actions/checkout@v4
 
@@ -29,7 +48,10 @@ jobs:
       - name: Type check (mypy, strict)
         run: uv run mypy
 
-      - name: Unit and contract tests
+      - name: Apply Alembic migrations
+        run: uv run alembic -c database/alembic.ini upgrade head
+
+      - name: Tests
         run: uv run pytest
 
       - name: Validate Docker Compose

@@ -1,5 +1,12 @@
-"""Inbound/outbound ports (interfaces).
+"""Application and persistence ports. JobSourcePort is introduced in M2."""
 
-Job discovery uses a provider-neutral JobSourcePort and registry (M2).
-No concrete job provider is part of the port layer.
-"""
+from careerpilot.ports.clock import ClockPort
+from careerpilot.ports.ids import IdGeneratorPort
+from careerpilot.ports.repositories import JobRepository, UserRepository
+
+__all__ = [
+    "ClockPort",
+    "IdGeneratorPort",
+    "JobRepository",
+    "UserRepository",
+]

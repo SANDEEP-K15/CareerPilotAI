@@ -1,5 +1,5 @@
-# Local development infrastructure for M0.
-# Application containers, Temporal, Redis, and job providers are not part of M0.
+# Local development infrastructure. Application, Temporal, and job providers
+# are not part of M1. Postgres is the M1 system of record.
 
 name: careerpilot
 

@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M0 complete** after verification in this repository. Do not start
-M1 without explicit approval.
+Status: **M1 complete** after verification in this repository. Do not start
+M2 without explicit approval.
 
 ## Product goal
 
@@ -22,7 +22,7 @@ be present, or the conceptual primary source of jobs.
 | ID | Scope | Status |
 |---|---|---|
 | M0 | Architecture and repository foundation | Complete |
-| M1 | Core domain, configuration, PostgreSQL/Alembic | Not started |
+| M1 | Core domain, configuration, PostgreSQL/Alembic | Complete |
 | M2 | JobSourcePort, registry, provider errors | Not started |
 | M3 | First JobSource adapter (Adzuna, validation only) | Not started |
 | M4 | Normalization and deterministic deduplication | Not started |
@@ -56,11 +56,20 @@ be present, or the conceptual primary source of jobs.
 - CI: lint, typecheck, tests, compose config validation
 - `evaluation/` stubs (not implemented)
 
-## Explicitly out of M0
+## M1 scope (complete)
 
-Domain tables, JobSource implementations (including Adzuna), search,
-matching, agents, Temporal worker, Hermes, LLM, resumes, applications,
-browser automation.
+- Domain: `User`, canonical `Job`, `SourceKey`, employment/remote/status VOs
+- Ports: `ClockPort`, `IdGeneratorPort`, `UserRepository`, `JobRepository`
+- PostgreSQL models mapped behind those ports
+- Alembic revision `m1_001_users_jobs` (`users`, `jobs`)
+- Settings with production secret validation
+- Unit tests plus optional Postgres integration tests
+
+## Explicitly out of M1
+
+JobSourcePort implementations (including Adzuna), search, matching,
+agents, Temporal worker, Hermes, LLM, resumes, applications, browser
+automation, Redis, profiles, recommendations.
 
 ## First production slice
 
