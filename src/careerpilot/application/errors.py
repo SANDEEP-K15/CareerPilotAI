@@ -30,3 +30,36 @@ class JobAlreadyExistsError(ApplicationError):
         )
         self.source = source
         self.external_id = external_id
+
+
+class CareerProfileAlreadyExistsError(ApplicationError):
+    def __init__(self, user_id: str) -> None:
+        super().__init__(
+            f"Career profile for user {user_id} already exists.",
+            code="career_profile_already_exists",
+        )
+        self.user_id = user_id
+
+
+class CareerProfileNotFoundError(ApplicationError):
+    def __init__(self, user_id: str) -> None:
+        super().__init__(
+            f"Career profile for user {user_id} was not found.",
+            code="career_profile_not_found",
+        )
+        self.user_id = user_id
+
+
+class ResumeNotFoundError(ApplicationError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="resume_not_found")
+
+
+class ResumeVersionConflictError(ApplicationError):
+    def __init__(self, user_id: str, version: int) -> None:
+        super().__init__(
+            f"Resume version {version} already exists for user {user_id}.",
+            code="resume_version_conflict",
+        )
+        self.user_id = user_id
+        self.version = version

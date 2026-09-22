@@ -20,3 +20,13 @@ class InvalidUserError(DomainError):
 class InvalidJobError(DomainError):
     def __init__(self, message: str) -> None:
         super().__init__(message, code="invalid_job")
+
+
+class InvalidProfileError(DomainError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="invalid_profile")
+
+
+class InvalidResumeError(DomainError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="invalid_resume")

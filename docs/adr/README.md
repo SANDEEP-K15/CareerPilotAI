@@ -20,3 +20,4 @@ Supersede with a new ADR.
 | [0015](0015-jobsourceport-rawjob.md) | JobSourcePort returns RawJob pages | Accepted |
 | [0016](0016-rawjob-normalization-ingest.md) | RawJob → Job ingest and identity dedupe | Accepted |
 | [0017](0017-job-search-http-api.md) | Versioned job-search HTTP API | Accepted |
+| [0018](0018-career-profile-resume-versioning.md) | Career profile 1:1; versioned resumes | Accepted |

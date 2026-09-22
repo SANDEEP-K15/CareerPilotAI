@@ -4,7 +4,13 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
-from careerpilot.application.errors import ApplicationError
+from careerpilot.application.errors import (
+    ApplicationError,
+    CareerProfileAlreadyExistsError,
+    CareerProfileNotFoundError,
+    ResumeNotFoundError,
+    UserNotFoundError,
+)
 from careerpilot.application.job_sources.errors import UnknownJobSourceError
 from careerpilot.domain.errors import DomainError
 from careerpilot.ports.job_source import InvalidJobSearchQueryError
@@ -30,6 +36,38 @@ def register_exception_handlers(app: FastAPI) -> None:
     async def unknown_source(_request: Request, exc: UnknownJobSourceError) -> JSONResponse:
         return JSONResponse(
             status_code=404,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(UserNotFoundError)
+    async def user_not_found(_request: Request, exc: UserNotFoundError) -> JSONResponse:
+        return JSONResponse(
+            status_code=404,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(CareerProfileNotFoundError)
+    async def profile_not_found(
+        _request: Request, exc: CareerProfileNotFoundError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=404,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(ResumeNotFoundError)
+    async def resume_not_found(_request: Request, exc: ResumeNotFoundError) -> JSONResponse:
+        return JSONResponse(
+            status_code=404,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(CareerProfileAlreadyExistsError)
+    async def profile_exists(
+        _request: Request, exc: CareerProfileAlreadyExistsError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=409,
             content=error_body(_request, code=exc.code, message=exc.message),
         )
 

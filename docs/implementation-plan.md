@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M5 complete** after verification in this repository. Do not start
-M6 without explicit approval.
+Status: **M6 complete** after verification in this repository. Do not start
+M7 without explicit approval.
 
 ## Product goal
 
@@ -27,7 +27,7 @@ be present, or the conceptual primary source of jobs.
 | M3 | First JobSource adapter (Adzuna, validation only) | Complete |
 | M4 | Normalization and deterministic deduplication | Complete |
 | M5 | Job search API | Complete |
-| M6 | Career profile and resume foundation | Not started |
+| M6 | Career profile and resume foundation | Complete |
 | M7 | Deterministic matching engine | Not started |
 | M8 | Daily job discovery Temporal workflow | Not started |
 | M9 | Agent framework | Not started |
@@ -120,6 +120,23 @@ additional real providers.
 
 User profiles, resume processing, matching, ranking, daily recommendations,
 AI agents, Temporal, LLM, Hermes, browser automation, applications,
+additional job providers.
+
+## M6 scope (complete)
+
+- `CareerProfile` domain entity (skills, target titles, locations, remote,
+  employment type, years of experience)
+- Versioned `Resume` rows; new content never overwrites history
+- Repository ports + in-memory and SQLAlchemy adapters
+- Alembic `m6_002_profiles_resumes`
+- Use cases: save/get profile, add/list/get resume versions
+- HTTP DTOs under `/api/v1/users/{id}/profile` and `/resumes`
+- No matching, embeddings, LLM parsing, or agents
+
+## Explicitly out of M6
+
+Matching, ranking, embeddings, vector DB, LLM, AI resume parsing, agents,
+Temporal, daily recommendations, Hermes, browser automation, applications,
 additional job providers.
 
 ## First production slice

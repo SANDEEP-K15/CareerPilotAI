@@ -107,3 +107,23 @@ from careerpilot.application.use_cases.search_and_ingest_jobs import SearchAndIn
 ```
 
 Do not point this API at Adzuna from application or API code.
+
+## Career profile and resumes (M6)
+
+DTOs only. No ORM models, no embeddings, no parsed structured resume trees.
+
+`PUT /api/v1/users/{user_id}/profile` — create or replace the user's single profile  
+`GET /api/v1/users/{user_id}/profile`  
+`POST /api/v1/users/{user_id}/resumes` — append an immutable version (becomes active)  
+`GET /api/v1/users/{user_id}/resumes`  
+`GET /api/v1/users/{user_id}/resumes/active`  
+`GET /api/v1/users/{user_id}/resumes/{version}`
+
+Profile body: `headline`, `summary`, `skills`, `target_titles`, `locations`,
+`remote_policy`, `employment_type`, `years_experience`. Extra fields rejected.
+
+Resume body: `content` (plain text), optional `label`. Previous versions remain.
+
+`404` `user_not_found` / `career_profile_not_found` / `resume_not_found`.
+`422` `invalid_profile` / `invalid_resume` / `invalid_request`.
+

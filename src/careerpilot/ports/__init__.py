@@ -11,9 +11,15 @@ from careerpilot.ports.job_source import (
     RawJob,
     normalize_job_source_failure,
 )
-from careerpilot.ports.repositories import JobRepository, UserRepository
+from careerpilot.ports.repositories import (
+    CareerProfileRepository,
+    JobRepository,
+    ResumeRepository,
+    UserRepository,
+)
 
 __all__ = [
+    "CareerProfileRepository",
     "ClockPort",
     "IdGeneratorPort",
     "InvalidJobSearchQueryError",
@@ -25,6 +31,7 @@ __all__ = [
     "JobSourceErrorCode",
     "JobSourcePort",
     "RawJob",
+    "ResumeRepository",
     "UserRepository",
     "normalize_job_source_failure",
 ]

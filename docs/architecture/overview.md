@@ -38,11 +38,13 @@ infrastructure (adapters: job sources, Postgres, Temporal, LLM, …)
 - **api / worker** — delivery. FastAPI under `/api/v1` (ADR 0017).
   Workers remain later.
 
-## Persistence (M1)
+## Persistence (M1, M6)
 
-Tables: `users`, `jobs`. Unique `(source, external_id)` on jobs. Indexes
-on `content_hash`, `posted_at`, and `status`. No Redis. No profile,
-resume, match, recommendation, application, or cost tables yet.
+Tables: `users`, `jobs`, `career_profiles`, `resumes`. Unique
+`(source, external_id)` on jobs. One profile per user. Unique
+`(user_id, version)` on resumes, with at most one active resume per user.
+Indexes on job `content_hash`, `posted_at`, and `status`. No Redis. No
+match, recommendation, application, or cost tables yet.
 
 ## Job discovery
 

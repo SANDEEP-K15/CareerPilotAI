@@ -78,7 +78,9 @@ async def db_session(migrated_database: str) -> AsyncIterator[AsyncSession]:
     engine = create_async_engine(migrated_database)
     factory = create_session_factory(engine)
     async with factory() as session:
-        await session.execute(text("TRUNCATE TABLE users, jobs RESTART IDENTITY CASCADE"))
+        await session.execute(
+            text("TRUNCATE TABLE resumes, career_profiles, jobs, users RESTART IDENTITY CASCADE")
+        )
         await session.commit()
         yield session
         await session.rollback()

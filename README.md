@@ -10,17 +10,13 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M5 — Job search HTTP API.**
+**M6 — Career profile and resume foundation.**
 
 Not yet implemented: matching, agents, Temporal workers, LLM adapters,
-Hermes, resumes, user profiles, or applications.
+Hermes, or applications.
 
-`POST /api/v1/jobs/search` searches **registered** sources, ingests via M4,
-and returns canonical jobs. See [HTTP API](docs/api.md). The API does not
-call Adzuna (or any vendor) directly and does not hard-code country or role.
-
-Adzuna remains optional adapter configuration (`ADZUNA__COUNTRY`, default
-`gb` on that adapter only). See [Adzuna notes](docs/providers/adzuna.md).
+Users have one career profile and versioned plain-text resumes. See
+[HTTP API](docs/api.md) and ADR 0018. Job search from M5 is unchanged.
 
 ## Principles
 
