@@ -1,0 +1,25 @@
+# Local development infrastructure for M0.
+# Application containers, Temporal, Redis, and job providers are not part of M0.
+
+name: careerpilot
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: careerpilot
+      POSTGRES_PASSWORD: careerpilot
+      POSTGRES_DB: careerpilot
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U careerpilot -d careerpilot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
