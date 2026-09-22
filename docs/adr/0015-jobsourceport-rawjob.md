@@ -17,8 +17,8 @@ listings that do not yet have those fields. Folding provider results into
 - `RawJob` is provider-neutral (source key, external id, title, company,
   URLs, location, description, posted_at, opaque extra).
 - Canonical `Job` is unchanged and remains the persistence model.
-- Mapping `RawJob` → `Job` is deferred to M4 (normalization) together with
-  ingest into `JobRepository`.
+- Mapping `RawJob` → `Job` is application ingest (`job_from_raw` +
+  `IngestRawJobUseCase`; ADR 0016).
 - Pagination is page/page_size/`has_more` only. Cursor schemes are not
   part of the contract until a provider requires them.
 - Detail fetch is not on the port until a real adapter needs it.

@@ -10,14 +10,17 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M3 — First job-source adapter (optional Adzuna).**
+**M4 — Normalization and deterministic deduplication.**
 
-Not yet implemented: additional providers, search API, matching, agents,
-Temporal workers, LLM adapters, Hermes, resumes, or applications.
+Not yet implemented: search API, matching, agents, Temporal workers, LLM
+adapters, Hermes, resumes, or applications.
 
-Adzuna is optional. Without `ADZUNA__APP_ID` / `ADZUNA__APP_KEY` the
-platform still boots; the adapter reports unavailability instead of
-inventing jobs. See [Adzuna notes](docs/providers/adzuna.md).
+`IngestRawJobUseCase` maps provider-neutral `RawJob` values to canonical
+`Job` rows. Identity is `(source, external_id)`. See ADR 0016.
+
+Adzuna remains optional. Country for that adapter is `ADZUNA__COUNTRY`
+(default `gb`) and is search configuration, not a field on `Job`.
+See [Adzuna notes](docs/providers/adzuna.md).
 
 ## Principles
 

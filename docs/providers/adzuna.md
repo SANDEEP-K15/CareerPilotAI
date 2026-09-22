@@ -45,3 +45,8 @@ not call the network. Composition roots may register `AdzunaJobSource` on
 
 `RawJob.source` is `SourceKey("adzuna")` as an adapter identity string, not
 a domain enum. Canonical `Job` is unchanged.
+
+Country (`ADZUNA__COUNTRY`, default `gb`) selects the Adzuna search
+index. It is adapter configuration. Do not add country onto `Job`;
+listing `location` is whatever the search result contained. User-level
+country/location preference is a later profile/search concern.

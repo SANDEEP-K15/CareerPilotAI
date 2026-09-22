@@ -6,11 +6,12 @@ from sqlalchemy import select
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from careerpilot.application.errors import JobAlreadyExistsError
+from careerpilot.application.errors import JobAlreadyExistsError, JobNotFoundError
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.user import User
 from careerpilot.domain.value_objects.source_key import SourceKey
 from careerpilot.infrastructure.persistence.postgres.mapping import (
+    apply_job_to_model,
     job_from_model,
     job_to_model,
     user_from_model,
@@ -55,3 +56,13 @@ class SqlAlchemyJobRepository:
         result = await self._session.execute(stmt)
         row = result.scalar_one_or_none()
         return job_from_model(row) if row is not None else None
+
+    async def update(self, job: Job) -> None:
+        row = await self._session.get(JobModel, job.id)
+        if row is None:
+            raise JobNotFoundError(str(job.id))
+        apply_job_to_model(job, row)
+        try:
+            await self._session.flush()
+        except IntegrityError as exc:
+            raise JobAlreadyExistsError(job.source.value, job.external_id) from exc

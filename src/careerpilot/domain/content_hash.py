@@ -1,4 +1,4 @@
-"""Deterministic content hashing for later deduplication (M4)."""
+"""Deterministic SHA-256 of normalized title, company, description, and URLs."""
 
 from __future__ import annotations
 

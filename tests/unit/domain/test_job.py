@@ -53,6 +53,11 @@ def test_job_rejects_non_http_url() -> None:
         _job(source_url="ftp://example.com/job")
 
 
+def test_job_canonicalizes_http_url() -> None:
+    job = _job(source_url="HTTPS://Example.COM/path?q=1#frag")
+    assert job.source_url == "https://example.com/path?q=1"
+
+
 def test_content_hash_is_stable_and_case_insensitive_on_title() -> None:
     first = job_content_hash(
         title="ML Intern",

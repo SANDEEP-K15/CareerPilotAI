@@ -51,6 +51,24 @@ def job_to_model(job: Job) -> JobModel:
     )
 
 
+def apply_job_to_model(job: Job, row: JobModel) -> None:
+    row.source = job.source.value
+    row.external_id = job.external_id
+    row.title = job.title
+    row.company_name = job.company_name
+    row.source_url = job.source_url
+    row.application_url = job.application_url
+    row.location = job.location
+    row.remote_policy = job.remote_policy.value
+    row.employment_type = job.employment_type.value
+    row.description = job.description
+    row.posted_at = job.posted_at
+    row.discovered_at = job.discovered_at
+    row.content_hash = job.content_hash
+    row.extra = dict(job.extra)
+    row.status = job.status.value
+
+
 def job_from_model(row: JobModel) -> Job:
     return Job(
         id=row.id,

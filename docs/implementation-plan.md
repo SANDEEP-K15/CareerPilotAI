@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M3 complete** after verification in this repository. Do not start
-M4 without explicit approval.
+Status: **M4 complete** after verification in this repository. Do not start
+M5 without explicit approval.
 
 ## Product goal
 
@@ -25,7 +25,7 @@ be present, or the conceptual primary source of jobs.
 | M1 | Core domain, configuration, PostgreSQL/Alembic | Complete |
 | M2 | JobSourcePort, registry, provider errors | Complete |
 | M3 | First JobSource adapter (Adzuna, validation only) | Complete |
-| M4 | Normalization and deterministic deduplication | Not started |
+| M4 | Normalization and deterministic deduplication | Complete |
 | M5 | Job search API | Not started |
 | M6 | Career profile and resume foundation | Not started |
 | M7 | Deterministic matching engine | Not started |
@@ -85,7 +85,25 @@ be present, or the conceptual primary source of jobs.
 ## Explicitly out of M3
 
 Other providers, search HTTP API, matching, agents, Temporal, Hermes, LLM,
-resumes, applications, browser automation, `RawJob` → `Job` persistence (M4).
+resumes, applications, browser automation.
+
+## M4 scope (complete)
+
+- Provider-neutral `job_from_raw` (`RawJob` → canonical `Job`)
+- `IngestRawJobUseCase`: created / unchanged / updated / rejected
+- `JobRepository.update` (in-memory fake and SQLAlchemy)
+- Identity dedupe: unique `(source, external_id)`
+- `content_hash` as change detector, not a merge key across sources
+- URLs canonicalized; timestamps stored as UTC
+- Opaque `extra` only; no vendor fields on `Job`
+- Adzuna country remains adapter config (`ADZUNA__COUNTRY`, default `gb`).
+  It is not added to the Job domain model.
+
+## Explicitly out of M4
+
+Search HTTP API, matching, ranking, daily recommendations, user profile,
+agents, Temporal, LLM, Hermes, resumes, applications, browser automation,
+additional real providers.
 
 ## First production slice
 

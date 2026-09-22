@@ -7,6 +7,7 @@ from uuid import UUID
 
 from careerpilot.domain.content_hash import job_content_hash
 from careerpilot.domain.errors import InvalidJobError
+from careerpilot.domain.urls import canonicalize_http_url
 from careerpilot.domain.value_objects.employment_type import EmploymentType
 from careerpilot.domain.value_objects.job_status import JobStatus
 from careerpilot.domain.value_objects.remote_policy import RemotePolicy
@@ -120,16 +121,14 @@ def _optional_text(value: str | None, *, field: str, max_len: int | None) -> str
 
 
 def _optional_url(value: str | None) -> str | None:
-    if value is None:
+    canonical = canonicalize_http_url(value)
+    if canonical is None:
         return None
-    trimmed = value.strip()
-    if not trimmed:
-        return None
-    if len(trimmed) > _MAX_URL:
+    if len(canonical) > _MAX_URL:
         raise InvalidJobError(f"url must be at most {_MAX_URL} characters.")
-    if not (trimmed.startswith("https://") or trimmed.startswith("http://")):
+    if not (canonical.startswith("https://") or canonical.startswith("http://")):
         raise InvalidJobError("urls must start with http:// or https://.")
-    return trimmed
+    return canonical
 
 
 def _require_aware(value: datetime, *, field: str) -> None:

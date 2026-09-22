@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from uuid import UUID
 
-from careerpilot.application.errors import JobAlreadyExistsError
+from careerpilot.application.errors import JobAlreadyExistsError, JobNotFoundError
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.user import User
 from careerpilot.domain.value_objects.source_key import SourceKey
@@ -39,3 +39,16 @@ class InMemoryJobRepository:
         if job_id is None:
             return None
         return self._by_id.get(job_id)
+
+    async def update(self, job: Job) -> None:
+        if job.id not in self._by_id:
+            raise JobNotFoundError(str(job.id))
+        previous = self._by_id[job.id]
+        old_key = (previous.source.value, previous.external_id)
+        new_key = (job.source.value, job.external_id)
+        if old_key != new_key:
+            if new_key in self._by_source:
+                raise JobAlreadyExistsError(job.source.value, job.external_id)
+            del self._by_source[old_key]
+            self._by_source[new_key] = job.id
+        self._by_id[job.id] = job
