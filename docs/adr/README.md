@@ -21,3 +21,4 @@ Supersede with a new ADR.
 | [0016](0016-rawjob-normalization-ingest.md) | RawJob → Job ingest and identity dedupe | Accepted |
 | [0017](0017-job-search-http-api.md) | Versioned job-search HTTP API | Accepted |
 | [0018](0018-career-profile-resume-versioning.md) | Career profile 1:1; versioned resumes | Accepted |
+| [0019](0019-deterministic-job-matching.md) | Deterministic job matching | Accepted |

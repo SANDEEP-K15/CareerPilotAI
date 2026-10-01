@@ -6,10 +6,12 @@ from careerpilot.api.schemas.jobs import (
     SourceErrorResponse,
     SourcePageResponse,
 )
+from careerpilot.api.schemas.matches import JobMatchResponse, MatchReportResponse
 from careerpilot.api.schemas.profiles import CareerProfileResponse, ResumeResponse
 from careerpilot.application.use_cases.search_and_ingest_jobs import SearchAndIngestResult
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.job import Job
+from careerpilot.domain.entities.job_match import MatchReport
 from careerpilot.domain.entities.resume import Resume
 
 
@@ -91,4 +93,26 @@ def resume_to_response(resume: Resume) -> ResumeResponse:
         content_type=resume.content_type.value,
         is_active=resume.is_active,
         created_at=resume.created_at,
+    )
+
+
+def match_report_to_response(report: MatchReport, *, request_id: str) -> MatchReportResponse:
+    return MatchReportResponse(
+        user_id=report.user_id,
+        profile_id=report.profile_id,
+        threshold=report.threshold,
+        considered=report.considered,
+        rejected=report.rejected,
+        items=tuple(
+            JobMatchResponse(
+                job_id=item.job_id,
+                score=item.score,
+                matched_skills=item.matched_skills,
+                missing_skills=item.missing_skills,
+                reasons=item.reasons,
+                concerns=item.concerns,
+            )
+            for item in report.matches
+        ),
+        request_id=request_id,
     )

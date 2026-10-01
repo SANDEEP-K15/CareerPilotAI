@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M6 complete** after verification in this repository. Do not start
-M7 without explicit approval.
+Status: **M7 complete** after verification in this repository. Do not start
+M8 without explicit approval.
 
 ## Product goal
 
@@ -28,7 +28,7 @@ be present, or the conceptual primary source of jobs.
 | M4 | Normalization and deterministic deduplication | Complete |
 | M5 | Job search API | Complete |
 | M6 | Career profile and resume foundation | Complete |
-| M7 | Deterministic matching engine | Not started |
+| M7 | Deterministic matching engine | Complete |
 | M8 | Daily job discovery Temporal workflow | Not started |
 | M9 | Agent framework | Not started |
 | M10 | Job Search Agent | Not started |
@@ -138,6 +138,21 @@ additional job providers.
 Matching, ranking, embeddings, vector DB, LLM, AI resume parsing, agents,
 Temporal, daily recommendations, Hermes, browser automation, applications,
 additional job providers.
+
+## M7 scope (complete)
+
+- Deterministic `match_job` / `rank_matches` over persisted Job + CareerProfile
+- Hard filters: inactive, remote, employment, location (when specified)
+- Integer weighted score with explanations (matched/missing skills)
+- `MatchJobsUseCase` reads `list_active`; does not call providers
+- `GET /api/v1/users/{user_id}/matches`
+- Threshold default 40; do not pad weak results
+- M5 job search unchanged
+
+## Explicitly out of M7
+
+LLM, embeddings, vector DB, ranking agents, Temporal, daily recommendations,
+Hermes, resume parsing, browser automation, additional providers.
 
 ## First production slice
 

@@ -14,6 +14,7 @@ from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume
 from careerpilot.domain.entities.user import User
+from careerpilot.domain.value_objects.job_status import JobStatus
 from careerpilot.domain.value_objects.source_key import SourceKey
 
 
@@ -61,6 +62,11 @@ class InMemoryJobRepository:
             del self._by_source[old_key]
             self._by_source[new_key] = job.id
         self._by_id[job.id] = job
+
+    async def list_active(self) -> tuple[Job, ...]:
+        items = [job for job in self._by_id.values() if job.status is JobStatus.ACTIVE]
+        items.sort(key=lambda job: str(job.id))
+        return tuple(items)
 
 
 class InMemoryCareerProfileRepository:

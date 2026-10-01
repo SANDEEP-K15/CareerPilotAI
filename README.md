@@ -10,13 +10,13 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M6 — Career profile and resume foundation.**
+**M7 — Deterministic job matching.**
 
-Not yet implemented: matching, agents, Temporal workers, LLM adapters,
+Not yet implemented: daily Temporal workflow, agents, LLM adapters,
 Hermes, or applications.
 
-Users have one career profile and versioned plain-text resumes. See
-[HTTP API](docs/api.md) and ADR 0018. Job search from M5 is unchanged.
+`GET /api/v1/users/{user_id}/matches` scores persisted jobs against the
+user's career profile. Job search from M5 is unchanged. See ADR 0019.
 
 ## Principles
 

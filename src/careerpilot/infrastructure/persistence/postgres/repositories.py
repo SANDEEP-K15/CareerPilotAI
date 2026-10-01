@@ -18,6 +18,7 @@ from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume
 from careerpilot.domain.entities.user import User
+from careerpilot.domain.value_objects.job_status import JobStatus
 from careerpilot.domain.value_objects.source_key import SourceKey
 from careerpilot.infrastructure.persistence.postgres.mapping import (
     apply_job_to_model,
@@ -85,6 +86,15 @@ class SqlAlchemyJobRepository:
             await self._session.flush()
         except IntegrityError as exc:
             raise JobAlreadyExistsError(job.source.value, job.external_id) from exc
+
+    async def list_active(self) -> tuple[Job, ...]:
+        stmt = (
+            select(JobModel)
+            .where(JobModel.status == JobStatus.ACTIVE.value)
+            .order_by(JobModel.id)
+        )
+        result = await self._session.execute(stmt)
+        return tuple(job_from_model(row) for row in result.scalars().all())
 
 
 class SqlAlchemyCareerProfileRepository:

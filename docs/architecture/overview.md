@@ -43,8 +43,9 @@ infrastructure (adapters: job sources, Postgres, Temporal, LLM, …)
 Tables: `users`, `jobs`, `career_profiles`, `resumes`. Unique
 `(source, external_id)` on jobs. One profile per user. Unique
 `(user_id, version)` on resumes, with at most one active resume per user.
-Indexes on job `content_hash`, `posted_at`, and `status`. No Redis. No
-match, recommendation, application, or cost tables yet.
+Indexes on job `content_hash`, `posted_at`, and `status`. Matching is
+computed, not stored. No Redis. No recommendation, application, or cost
+tables yet.
 
 ## Job discovery
 
@@ -57,7 +58,9 @@ Use case → JobSourceRegistry → N adapters implementing JobSourcePort
                 ↓
          Normalizer → canonical Job
                 ↓
-         deterministic dedupe / filter / match / rank
+         deterministic matching (profile vs catalog)
+                ↓
+         later: daily recs / rank / agents
 ```
 
 No job provider is a platform dependency. The registry must operate when

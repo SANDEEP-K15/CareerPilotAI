@@ -127,3 +127,14 @@ Resume body: `content` (plain text), optional `label`. Previous versions remain.
 `404` `user_not_found` / `career_profile_not_found` / `resume_not_found`.
 `422` `invalid_profile` / `invalid_resume` / `invalid_request`.
 
+## Matches (M7)
+
+`GET /api/v1/users/{user_id}/matches?threshold=40&limit=20`
+
+Scores **persisted** jobs against the user's career profile. Does not
+search providers. Query params: `threshold` 0–100, `limit` 1–50.
+
+Response items: `job_id`, `score`, `matched_skills`, `missing_skills`,
+`reasons`, `concerns`. Jobs below the threshold or hard-filtered are
+omitted (`rejected` counts them). Empty result is valid.
+

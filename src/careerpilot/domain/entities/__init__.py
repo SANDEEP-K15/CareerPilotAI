@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.job import Job
+from careerpilot.domain.entities.job_match import JobMatch, MatchReport
 from careerpilot.domain.entities.resume import Resume, ResumeContentType
 from careerpilot.domain.entities.user import User
 from careerpilot.domain.value_objects.employment_type import EmploymentType
@@ -14,7 +15,9 @@ __all__ = [
     "CareerProfile",
     "EmploymentType",
     "Job",
+    "JobMatch",
     "JobStatus",
+    "MatchReport",
     "RemotePolicy",
     "Resume",
     "ResumeContentType",

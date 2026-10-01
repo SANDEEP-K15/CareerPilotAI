@@ -12,6 +12,7 @@ from careerpilot.application.errors import (
     UserNotFoundError,
 )
 from careerpilot.application.job_sources.errors import UnknownJobSourceError
+from careerpilot.application.use_cases.match_jobs import InvalidMatchQueryError
 from careerpilot.domain.errors import DomainError
 from careerpilot.ports.job_source import InvalidJobSearchQueryError
 
@@ -74,6 +75,15 @@ def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(InvalidJobSearchQueryError)
     async def invalid_query(
         _request: Request, exc: InvalidJobSearchQueryError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=422,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(InvalidMatchQueryError)
+    async def invalid_match(
+        _request: Request, exc: InvalidMatchQueryError
     ) -> JSONResponse:
         return JSONResponse(
             status_code=422,
