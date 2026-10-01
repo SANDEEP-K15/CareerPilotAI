@@ -1,9 +1,11 @@
 from __future__ import annotations
 
+from datetime import date
 from typing import Protocol
 from uuid import UUID
 
 from careerpilot.domain.entities.career_profile import CareerProfile
+from careerpilot.domain.entities.daily_discovery import DailyDiscovery
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume
 from careerpilot.domain.entities.user import User
@@ -50,3 +52,9 @@ class ResumeRepository(Protocol):
     async def latest_version_number(self, user_id: UUID) -> int | None: ...
 
     async def set_active(self, user_id: UUID, resume_id: UUID) -> None: ...
+
+
+class DailyDiscoveryRepository(Protocol):
+    async def get_by_user_and_run(self, user_id: UUID, run_on: date) -> DailyDiscovery | None: ...
+
+    async def save(self, discovery: DailyDiscovery) -> DailyDiscovery: ...

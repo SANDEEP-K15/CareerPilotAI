@@ -23,6 +23,11 @@ from careerpilot.application.use_cases.career_profile import (
     SaveCareerProfileCommand,
     SaveCareerProfileUseCase,
 )
+from careerpilot.application.use_cases.discover_daily_jobs import (
+    DiscoverDailyJobsCommand,
+    DiscoverDailyJobsUseCase,
+    InvalidDiscoveryQueryError,
+)
 from careerpilot.application.use_cases.get_job import GetJobUseCase
 from careerpilot.application.use_cases.get_user import GetUserUseCase
 from careerpilot.application.use_cases.ingest_raw_job import IngestRawJobUseCase
@@ -52,6 +57,8 @@ __all__ = [
     "CareerProfileAlreadyExistsError",
     "CareerProfileNotFoundError",
     "CreateCareerProfileUseCase",
+    "DiscoverDailyJobsCommand",
+    "DiscoverDailyJobsUseCase",
     "DuplicateJobSourceRegistrationError",
     "GetActiveResumeUseCase",
     "GetCareerProfileUseCase",
@@ -61,6 +68,7 @@ __all__ = [
     "IngestOutcome",
     "IngestRawJobResult",
     "IngestRawJobUseCase",
+    "InvalidDiscoveryQueryError",
     "InvalidMatchQueryError",
     "JobAlreadyExistsError",
     "JobNotFoundError",

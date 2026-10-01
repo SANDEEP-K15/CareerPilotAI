@@ -1,1 +1,5 @@
-"""Temporal worker process entry (from M8). Not implemented in M0."""
+"""Temporal worker for daily job discovery."""
+
+from careerpilot.worker.workflows import DailyJobDiscoveryWorkflow
+
+__all__ = ["DailyJobDiscoveryWorkflow"]

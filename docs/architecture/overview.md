@@ -36,7 +36,7 @@ infrastructure (adapters: job sources, Postgres, Temporal, LLM, …)
 - **config** — environment-backed settings. Production/staging reject a
   placeholder `SECURITY__SECRET_KEY`.
 - **api / worker** — delivery. FastAPI under `/api/v1` (ADR 0017).
-  Workers remain later.
+  The worker runs `DailyJobDiscoveryWorkflow` (ADR 0020).
 
 ## Persistence (M1, M6)
 
@@ -44,8 +44,8 @@ Tables: `users`, `jobs`, `career_profiles`, `resumes`. Unique
 `(source, external_id)` on jobs. One profile per user. Unique
 `(user_id, version)` on resumes, with at most one active resume per user.
 Indexes on job `content_hash`, `posted_at`, and `status`. Matching is
-computed, not stored. No Redis. No recommendation, application, or cost
-tables yet.
+computed, not stored. `daily_discoveries` stores one snapshot per user
+per UTC day. No Redis. No application or cost tables yet.
 
 ## Job discovery
 
@@ -58,9 +58,11 @@ Use case → JobSourceRegistry → N adapters implementing JobSourcePort
                 ↓
          Normalizer → canonical Job
                 ↓
-         deterministic matching (profile vs catalog)
+         deterministic matching (profile vs discovered jobs)
                 ↓
-         later: daily recs / rank / agents
+         daily discovery workflow (Temporal)
+                ↓
+         later: agents
 ```
 
 No job provider is a platform dependency. The registry must operate when

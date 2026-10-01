@@ -1,6 +1,13 @@
 from __future__ import annotations
 
+from uuid import UUID
+
 from careerpilot.domain.entities.career_profile import CareerProfile
+from careerpilot.domain.entities.daily_discovery import (
+    DailyDiscovery,
+    DiscoverySelection,
+    DiscoverySourceFailure,
+)
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume, ResumeContentType
 from careerpilot.domain.entities.user import User
@@ -11,6 +18,7 @@ from careerpilot.domain.value_objects.source_key import SourceKey
 from careerpilot.domain.value_objects.user_status import UserStatus
 from careerpilot.infrastructure.persistence.postgres.models import (
     CareerProfileModel,
+    DailyDiscoveryModel,
     JobModel,
     ResumeModel,
     UserModel,
@@ -154,6 +162,84 @@ def resume_to_model(resume: Resume) -> ResumeModel:
         is_active=resume.is_active,
         created_at=resume.created_at,
     )
+
+
+def discovery_to_model(discovery: DailyDiscovery) -> DailyDiscoveryModel:
+    return DailyDiscoveryModel(
+        id=discovery.id,
+        user_id=discovery.user_id,
+        profile_id=discovery.profile_id,
+        run_on=discovery.run_on,
+        threshold=discovery.threshold,
+        selection_limit=discovery.limit,
+        considered=discovery.considered,
+        rejected=discovery.rejected,
+        selections=[_selection_to_json(item) for item in discovery.selections],
+        source_failures=[_failure_to_json(item) for item in discovery.failures],
+        explanation=discovery.explanation,
+        created_at=discovery.created_at,
+        updated_at=discovery.updated_at,
+    )
+
+
+def discovery_from_model(row: DailyDiscoveryModel) -> DailyDiscovery:
+    return DailyDiscovery(
+        id=row.id,
+        user_id=row.user_id,
+        profile_id=row.profile_id,
+        run_on=row.run_on,
+        threshold=row.threshold,
+        limit=row.selection_limit,
+        considered=row.considered,
+        rejected=row.rejected,
+        selections=tuple(_selection_from_json(item) for item in row.selections),
+        failures=tuple(_failure_from_json(item) for item in row.source_failures),
+        explanation=row.explanation,
+        created_at=row.created_at,
+        updated_at=row.updated_at,
+    )
+
+
+def _selection_to_json(item: DiscoverySelection) -> dict[str, object]:
+    return {
+        "job_id": str(item.job_id),
+        "score": item.score,
+        "matched_skills": list(item.matched_skills),
+        "missing_skills": list(item.missing_skills),
+        "reasons": list(item.reasons),
+        "concerns": list(item.concerns),
+    }
+
+
+def _selection_from_json(value: object) -> DiscoverySelection:
+    payload = value if isinstance(value, dict) else {}
+    return DiscoverySelection(
+        job_id=UUID(str(payload.get("job_id"))),
+        score=int(payload.get("score", 0)),
+        matched_skills=_str_tuple(payload.get("matched_skills")),
+        missing_skills=_str_tuple(payload.get("missing_skills")),
+        reasons=_str_tuple(payload.get("reasons")),
+        concerns=_str_tuple(payload.get("concerns")),
+    )
+
+
+def _failure_to_json(item: DiscoverySourceFailure) -> dict[str, str]:
+    return {"source": item.source, "code": item.code, "message": item.message}
+
+
+def _failure_from_json(value: object) -> DiscoverySourceFailure:
+    payload = value if isinstance(value, dict) else {}
+    return DiscoverySourceFailure(
+        source=str(payload.get("source", "")),
+        code=str(payload.get("code", "")),
+        message=str(payload.get("message", "")),
+    )
+
+
+def _str_tuple(value: object) -> tuple[str, ...]:
+    if not isinstance(value, list):
+        return ()
+    return tuple(str(item) for item in value)
 
 
 def resume_from_model(row: ResumeModel) -> Resume:

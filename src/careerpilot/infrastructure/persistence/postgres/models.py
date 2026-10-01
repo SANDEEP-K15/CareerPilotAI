@@ -1,12 +1,13 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import date, datetime
 from typing import Any
 from uuid import UUID
 
 from sqlalchemy import (
     Boolean,
     CheckConstraint,
+    Date,
     DateTime,
     ForeignKey,
     Index,
@@ -130,3 +131,34 @@ class ResumeModel(Base):
     content_type: Mapped[str] = mapped_column(String(32), nullable=False)
     is_active: Mapped[bool] = mapped_column(Boolean, nullable=False)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+
+
+class DailyDiscoveryModel(Base):
+    __tablename__ = "daily_discoveries"
+    __table_args__ = (
+        UniqueConstraint("user_id", "run_on", name="uq_daily_discoveries_user_run"),
+        CheckConstraint("threshold BETWEEN 0 AND 100", name="ck_daily_discoveries_threshold"),
+        CheckConstraint(
+            "selection_limit BETWEEN 1 AND 20", name="ck_daily_discoveries_selection_limit"
+        ),
+        CheckConstraint("considered >= 0", name="ck_daily_discoveries_considered"),
+        CheckConstraint(
+            "rejected >= 0 AND rejected <= considered", name="ck_daily_discoveries_rejected"
+        ),
+    )
+
+    id: Mapped[UUID] = mapped_column(primary_key=True)
+    user_id: Mapped[UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True
+    )
+    profile_id: Mapped[UUID] = mapped_column(nullable=False)
+    run_on: Mapped[date] = mapped_column(Date, nullable=False)
+    threshold: Mapped[int] = mapped_column(Integer, nullable=False)
+    selection_limit: Mapped[int] = mapped_column(Integer, nullable=False)
+    considered: Mapped[int] = mapped_column(Integer, nullable=False)
+    rejected: Mapped[int] = mapped_column(Integer, nullable=False)
+    selections: Mapped[list[Any]] = mapped_column(JSONB, nullable=False)
+    source_failures: Mapped[list[Any]] = mapped_column(JSONB, nullable=False)
+    explanation: Mapped[str] = mapped_column(Text, nullable=False)
+    created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)

@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M7 complete** after verification in this repository. Do not start
-M8 without explicit approval.
+Status: **M8 complete** after verification in this repository. Do not start
+M9 without explicit approval.
 
 ## Product goal
 
@@ -29,7 +29,7 @@ be present, or the conceptual primary source of jobs.
 | M5 | Job search API | Complete |
 | M6 | Career profile and resume foundation | Complete |
 | M7 | Deterministic matching engine | Complete |
-| M8 | Daily job discovery Temporal workflow | Not started |
+| M8 | Daily job discovery Temporal workflow | Complete |
 | M9 | Agent framework | Not started |
 | M10 | Job Search Agent | Not started |
 | M11 | Job Ranking Agent | Not started |
@@ -153,6 +153,22 @@ additional job providers.
 
 LLM, embeddings, vector DB, ranking agents, Temporal, daily recommendations,
 Hermes, resume parsing, browser automation, additional providers.
+
+## M8 scope (complete)
+
+- `DailyJobDiscoveryWorkflow` with activities for profile, search/ingest,
+  deterministic match, and persist
+- `DiscoverDailyJobsUseCase` reuses M4 ingest and M7 `rank_matches`
+- Hard filters and the relevance threshold stay in the matcher
+- At most 20 selections; no padding
+- `daily_discoveries` row keyed by user and UTC day; repeat runs return it
+- Provider failures are recorded and do not abort other sources
+- M5 search and M7 match HTTP behavior unchanged
+
+## Explicitly out of M8
+
+LLM, embeddings, agents, Hermes, resume tailoring, applications, browser
+automation, notifications, additional providers.
 
 ## First production slice
 

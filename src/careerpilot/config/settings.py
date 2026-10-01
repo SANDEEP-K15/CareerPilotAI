@@ -38,6 +38,14 @@ class DatabaseSettings(BaseSettings):
         return value
 
 
+class TemporalSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="TEMPORAL__", extra="ignore")
+
+    host: str = "localhost:7233"
+    namespace: str = "default"
+    task_queue: str = "careerpilot-task-queue"
+
+
 class SecuritySettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="SECURITY__", extra="ignore")
 
@@ -58,6 +66,7 @@ class Settings(BaseSettings):
 
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     security: SecuritySettings = Field(default_factory=SecuritySettings)
+    temporal: TemporalSettings = Field(default_factory=TemporalSettings)
 
     @model_validator(mode="after")
     def production_must_not_use_placeholder_secret(self) -> Settings:

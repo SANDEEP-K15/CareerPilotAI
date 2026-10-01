@@ -138,3 +138,10 @@ Response items: `job_id`, `score`, `matched_skills`, `missing_skills`,
 `reasons`, `concerns`. Jobs below the threshold or hard-filtered are
 omitted (`rejected` counts them). Empty result is valid.
 
+## Daily discovery (M8)
+
+Not an HTTP route. `DailyJobDiscoveryWorkflow` stores one
+`daily_discoveries` row per user and UTC day. It reuses job search
+ingest and deterministic matching. It does not change
+`POST /api/v1/jobs/search` or `GET /api/v1/users/{user_id}/matches`.
+

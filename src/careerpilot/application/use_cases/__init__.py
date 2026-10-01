@@ -4,6 +4,11 @@ from careerpilot.application.use_cases.career_profile import (
     SaveCareerProfileCommand,
     SaveCareerProfileUseCase,
 )
+from careerpilot.application.use_cases.discover_daily_jobs import (
+    DiscoverDailyJobsCommand,
+    DiscoverDailyJobsUseCase,
+    InvalidDiscoveryQueryError,
+)
 from careerpilot.application.use_cases.get_job import GetJobUseCase
 from careerpilot.application.use_cases.get_user import GetUserUseCase
 from careerpilot.application.use_cases.ingest_raw_job import IngestRawJobUseCase
@@ -31,12 +36,15 @@ __all__ = [
     "AddResumeVersionCommand",
     "AddResumeVersionUseCase",
     "CreateCareerProfileUseCase",
+    "DiscoverDailyJobsCommand",
+    "DiscoverDailyJobsUseCase",
     "GetActiveResumeUseCase",
     "GetCareerProfileUseCase",
     "GetJobUseCase",
     "GetResumeVersionUseCase",
     "GetUserUseCase",
     "IngestRawJobUseCase",
+    "InvalidDiscoveryQueryError",
     "InvalidMatchQueryError",
     "ListResumeVersionsUseCase",
     "MatchJobsCommand",

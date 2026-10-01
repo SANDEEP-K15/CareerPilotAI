@@ -10,13 +10,13 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M7 — Deterministic job matching.**
+**M8 — Daily job discovery workflow.**
 
-Not yet implemented: daily Temporal workflow, agents, LLM adapters,
-Hermes, or applications.
+Not yet implemented: agents, LLM adapters, Hermes, or applications.
 
-`GET /api/v1/users/{user_id}/matches` scores persisted jobs against the
-user's career profile. Job search from M5 is unchanged. See ADR 0019.
+`DailyJobDiscoveryWorkflow` searches registered sources, ingests through
+M4, ranks with M7, and stores at most 20 jobs for one user and UTC day.
+Job search and match HTTP behavior are unchanged. See ADR 0020.
 
 ## Principles
 
@@ -57,7 +57,7 @@ src/careerpilot/
   infrastructure/    Postgres adapters; optional Adzuna JobSourcePort
   config/            pydantic-settings
   api/               FastAPI delivery (`/api/v1`)
-  worker/            Temporal worker (later)
+  worker/            Temporal worker (`python -m careerpilot.worker`)
 database/            Alembic migrations
 tests/               Unit, integration, and contract tests
 ```

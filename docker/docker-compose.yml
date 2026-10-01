@@ -1,5 +1,5 @@
-# Local development infrastructure. Application, Temporal, and job providers
-# are not part of M1. Postgres is the M1 system of record.
+# Local development infrastructure. Postgres is the system of record.
+# Temporal is the M8 workflow server. Job providers are not composed here.
 
 name: careerpilot
 
@@ -20,6 +20,15 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+
+  temporal:
+    image: temporalio/auto-setup:1.27.2
+    restart: unless-stopped
+    ports:
+      - "7233:7233"
+    environment:
+      DB: sqlite
+      BIND_ON_IP: 0.0.0.0
 
 volumes:
   postgres-data:

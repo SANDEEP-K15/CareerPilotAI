@@ -1,12 +1,15 @@
 from __future__ import annotations
 
+from datetime import date
 from uuid import UUID
 
 from sqlalchemy import func, select, update
+from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from careerpilot.application.errors import (
+    ApplicationError,
     CareerProfileAlreadyExistsError,
     CareerProfileNotFoundError,
     JobAlreadyExistsError,
@@ -15,6 +18,7 @@ from careerpilot.application.errors import (
     ResumeVersionConflictError,
 )
 from careerpilot.domain.entities.career_profile import CareerProfile
+from careerpilot.domain.entities.daily_discovery import DailyDiscovery
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume
 from careerpilot.domain.entities.user import User
@@ -23,6 +27,8 @@ from careerpilot.domain.value_objects.source_key import SourceKey
 from careerpilot.infrastructure.persistence.postgres.mapping import (
     apply_job_to_model,
     apply_profile_to_model,
+    discovery_from_model,
+    discovery_to_model,
     job_from_model,
     job_to_model,
     profile_from_model,
@@ -34,6 +40,7 @@ from careerpilot.infrastructure.persistence.postgres.mapping import (
 )
 from careerpilot.infrastructure.persistence.postgres.models import (
     CareerProfileModel,
+    DailyDiscoveryModel,
     JobModel,
     ResumeModel,
     UserModel,
@@ -178,3 +185,48 @@ class SqlAlchemyResumeRepository:
         )
         target.is_active = True
         await self._session.flush()
+
+
+class SqlAlchemyDailyDiscoveryRepository:
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def get_by_user_and_run(self, user_id: UUID, run_on: date) -> DailyDiscovery | None:
+        stmt = select(DailyDiscoveryModel).where(
+            DailyDiscoveryModel.user_id == user_id,
+            DailyDiscoveryModel.run_on == run_on,
+        )
+        result = await self._session.execute(stmt)
+        row = result.scalar_one_or_none()
+        return discovery_from_model(row) if row is not None else None
+
+    async def save(self, discovery: DailyDiscovery) -> DailyDiscovery:
+        row = discovery_to_model(discovery)
+        stmt = (
+            pg_insert(DailyDiscoveryModel)
+            .values(
+                id=row.id,
+                user_id=row.user_id,
+                profile_id=row.profile_id,
+                run_on=row.run_on,
+                threshold=row.threshold,
+                selection_limit=row.selection_limit,
+                considered=row.considered,
+                rejected=row.rejected,
+                selections=row.selections,
+                source_failures=row.source_failures,
+                explanation=row.explanation,
+                created_at=row.created_at,
+                updated_at=row.updated_at,
+            )
+            .on_conflict_do_nothing(constraint="uq_daily_discoveries_user_run")
+        )
+        await self._session.execute(stmt)
+        await self._session.flush()
+        stored = await self.get_by_user_and_run(discovery.user_id, discovery.run_on)
+        if stored is None:
+            raise ApplicationError(
+                "Daily discovery was not stored.",
+                code="discovery_not_persisted",
+            )
+        return stored

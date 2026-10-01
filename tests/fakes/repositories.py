@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from datetime import date
 from uuid import UUID
 
 from careerpilot.application.errors import (
@@ -11,6 +12,7 @@ from careerpilot.application.errors import (
     ResumeVersionConflictError,
 )
 from careerpilot.domain.entities.career_profile import CareerProfile
+from careerpilot.domain.entities.daily_discovery import DailyDiscovery
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume
 from careerpilot.domain.entities.user import User
@@ -134,4 +136,20 @@ class InMemoryResumeRepository:
         for resume in self._by_id.values():
             if resume.user_id == user_id:
                 resume.is_active = resume.id == resume_id
+
+
+class InMemoryDailyDiscoveryRepository:
+    def __init__(self) -> None:
+        self._by_key: dict[tuple[UUID, date], DailyDiscovery] = {}
+
+    async def get_by_user_and_run(self, user_id: UUID, run_on: date) -> DailyDiscovery | None:
+        return self._by_key.get((user_id, run_on))
+
+    async def save(self, discovery: DailyDiscovery) -> DailyDiscovery:
+        key = (discovery.user_id, discovery.run_on)
+        existing = self._by_key.get(key)
+        if existing is not None:
+            return existing
+        self._by_key[key] = discovery
+        return discovery
 

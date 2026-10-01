@@ -22,3 +22,4 @@ Supersede with a new ADR.
 | [0017](0017-job-search-http-api.md) | Versioned job-search HTTP API | Accepted |
 | [0018](0018-career-profile-resume-versioning.md) | Career profile 1:1; versioned resumes | Accepted |
 | [0019](0019-deterministic-job-matching.md) | Deterministic job matching | Accepted |
+| [0020](0020-daily-job-discovery-workflow.md) | Daily job discovery Temporal workflow | Accepted |
