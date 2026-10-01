@@ -24,3 +24,4 @@ Supersede with a new ADR.
 | [0019](0019-deterministic-job-matching.md) | Deterministic job matching | Accepted |
 | [0020](0020-daily-job-discovery-workflow.md) | Daily job discovery Temporal workflow | Accepted |
 | [0021](0021-agent-framework.md) | Provider-neutral agent framework | Accepted |
+| [0022](0022-job-search-agent.md) | Job Search Agent | Accepted |

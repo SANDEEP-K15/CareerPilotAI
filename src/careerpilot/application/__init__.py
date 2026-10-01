@@ -1,6 +1,7 @@
 """Use cases depend on ports only. Provider-neutral."""
 
 from careerpilot.application.agents import (
+    JOB_SEARCH_AGENT_KEY,
     AgentExecutionError,
     AgentRegistry,
     AgentRunResult,
@@ -9,7 +10,9 @@ from careerpilot.application.agents import (
     DuplicateAgentRegistrationError,
     ExecuteAgentTaskUseCase,
     InvalidAgentTaskError,
+    JobSearchAgent,
     UnknownAgentError,
+    build_job_search_agent,
 )
 from careerpilot.application.errors import (
     ApplicationError,
@@ -89,8 +92,10 @@ __all__ = [
     "InvalidAgentTaskError",
     "InvalidDiscoveryQueryError",
     "InvalidMatchQueryError",
+    "JOB_SEARCH_AGENT_KEY",
     "JobAlreadyExistsError",
     "JobNotFoundError",
+    "JobSearchAgent",
     "JobSourceRegistry",
     "ListResumeVersionsUseCase",
     "MatchJobsCommand",
@@ -109,5 +114,6 @@ __all__ = [
     "UnknownAgentError",
     "UnknownJobSourceError",
     "UserNotFoundError",
+    "build_job_search_agent",
     "job_from_raw",
 ]

@@ -10,13 +10,13 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M9 — Agent framework.**
+**M10 — Job Search Agent.**
 
-Not yet implemented: concrete job agents, LLM adapters, Hermes, or applications.
+Not yet implemented: ranking agents, LLM adapters, Hermes, or applications.
 
-`AgentPort`, `AgentRegistry`, and `ExecuteAgentTaskUseCase` provide
-composable, provider-neutral agent execution. M5–M8 behavior is unchanged.
-See ADR 0021.
+`JobSearchAgent` runs registered job sources through the existing search
+and ingest use cases and returns structured results via `AgentPort`.
+M5–M9 behavior is unchanged. See ADR 0022.
 
 ## Principles
 

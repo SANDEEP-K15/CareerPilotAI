@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M9 complete** after verification in this repository. Do not start
-M10 without explicit approval.
+Status: **M10 complete** after verification in this repository. Do not start
+M11 without explicit approval.
 
 ## Product goal
 
@@ -31,7 +31,7 @@ be present, or the conceptual primary source of jobs.
 | M7 | Deterministic matching engine | Complete |
 | M8 | Daily job discovery Temporal workflow | Complete |
 | M9 | Agent framework | Complete |
-| M10 | Job Search Agent | Not started |
+| M10 | Job Search Agent | Complete |
 | M11 | Job Ranking Agent | Not started |
 | M12 | Executive, Planner, Task Router | Not started |
 | M13 | LLM provider abstraction | Not started |
@@ -183,6 +183,20 @@ automation, notifications, additional providers.
 LLM providers, OpenRouter/Anthropic/OpenAI, JobSearchAgent, RankingAgent,
 planner/executive agents, Hermes, resume generation, application automation,
 embeddings, vector DB, new Temporal workflows.
+
+## M10 scope (complete)
+
+- `JobSearchAgent` (`job_search`) on `AgentPort`
+- Parses structured agent input into `SearchJobsCommand`
+- Uses `SearchAndIngestJobsUseCase` and existing provider registry
+- Returns ingested job snapshots and normalized source failures
+- `build_job_search_agent` composition helper for tests/worker wiring
+- M5 HTTP search and M4 ingest behavior unchanged
+
+## Explicitly out of M10
+
+LLM providers, ranking AI, planner/executive agents, Hermes, resume
+generation, application automation, embeddings, vector DB, new providers.
 
 ## First production slice
 
