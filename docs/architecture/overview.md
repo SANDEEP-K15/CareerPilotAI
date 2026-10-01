@@ -74,8 +74,10 @@ goal, not a required runtime, and not allowed to leak into domain or
 application code.
 
 AI agents (M9+) orchestrate reasoning through application services and
-registered `AgentPort` implementations. They do not implement SQL,
-provider HTTP, Temporal clients, or LLM SDK calls in M9.
+registered `AgentPort` implementations. M12 adds a deterministic
+`Executive` that plans and routes multi-step agent work without LLM calls.
+They do not implement SQL, provider HTTP, Temporal clients, or LLM SDK
+calls in M9–M12.
 
 ## First production slice (M1–M8)
 

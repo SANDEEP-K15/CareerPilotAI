@@ -10,12 +10,15 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M11 — Job Ranking Agent.**
+**M12 — Executive, Planner, and Task Router.**
 
-Not yet implemented: planner/executive agents, LLM adapters, Hermes, or applications.
+Not yet implemented: LLM adapters, Hermes, or applications.
 
-`JobRankingAgent` ranks supplied canonical jobs for a user's profile using
-M7 deterministic matching. M5–M10 behavior is unchanged. See ADR 0023.
+Deterministic orchestration accepts user intents, plans multi-step work,
+routes steps to registered agents through `ExecuteAgentTaskUseCase`, and
+returns structured `OrchestrationResult` values. Composite `search_and_rank`
+chains M10 `job_search` and M11 `job_ranking`. M5–M11 behavior is
+unchanged. See ADR 0024.
 
 ## Principles
 

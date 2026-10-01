@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M11 complete** after verification in this repository. Do not start
-M12 without explicit approval.
+Status: **M12 complete** after verification in this repository. Do not start
+M13 without explicit approval.
 
 ## Product goal
 
@@ -33,7 +33,7 @@ be present, or the conceptual primary source of jobs.
 | M9 | Agent framework | Complete |
 | M10 | Job Search Agent | Complete |
 | M11 | Job Ranking Agent | Complete |
-| M12 | Executive, Planner, Task Router | Not started |
+| M12 | Executive, Planner, Task Router | Complete |
 | M13 | LLM provider abstraction | Not started |
 | M14 | AI semantic matching | Not started |
 | M15 | Hermes integration (HTTP client only) | Not started |
@@ -211,6 +211,21 @@ generation, application automation, embeddings, vector DB, new providers.
 
 LLM/embedding ranking, planner/executive agents, Hermes, resume tailoring,
 application automation, new providers.
+
+## M12 scope (complete)
+
+- `TaskPlannerPort`, `UserTaskRequest`, `ExecutionPlan`, and `PlannedStep`
+- `DeterministicTaskPlanner` for direct agent intents and `search_and_rank`
+- `TaskRouter` builds `AgentTask` values from planned steps
+- `Executive` executes plans via `ExecuteAgentTaskUseCase`
+- Structured `OrchestrationResult` with per-step agent outcomes
+- Unit tests with stub agents and explicit multi-step plans
+- M5–M11 behavior unchanged
+
+## Explicitly out of M12
+
+LLM providers, Hermes, resume tailoring, application automation, browser
+automation, embeddings, new job providers, new HTTP APIs.
 
 ## First production slice
 

@@ -26,3 +26,4 @@ Supersede with a new ADR.
 | [0021](0021-agent-framework.md) | Provider-neutral agent framework | Accepted |
 | [0022](0022-job-search-agent.md) | Job Search Agent | Accepted |
 | [0023](0023-job-ranking-agent.md) | Job Ranking Agent | Accepted |
+| [0024](0024-orchestration-executive-planner-router.md) | Executive, planner, task router | Accepted |
