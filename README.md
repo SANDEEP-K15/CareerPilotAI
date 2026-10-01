@@ -10,13 +10,13 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M8 — Daily job discovery workflow.**
+**M9 — Agent framework.**
 
-Not yet implemented: agents, LLM adapters, Hermes, or applications.
+Not yet implemented: concrete job agents, LLM adapters, Hermes, or applications.
 
-`DailyJobDiscoveryWorkflow` searches registered sources, ingests through
-M4, ranks with M7, and stores at most 20 jobs for one user and UTC day.
-Job search and match HTTP behavior are unchanged. See ADR 0020.
+`AgentPort`, `AgentRegistry`, and `ExecuteAgentTaskUseCase` provide
+composable, provider-neutral agent execution. M5–M8 behavior is unchanged.
+See ADR 0021.
 
 ## Principles
 
@@ -52,7 +52,7 @@ is set (then missing Postgres is a failure).
 ```
 src/careerpilot/
   domain/            Canonical User and Job — provider-neutral
-  application/       Use cases against repository ports
+  application/       Use cases, job-source registry, agent framework
   ports/             Clock, IDs, repositories (JobSourcePort in M2)
   infrastructure/    Postgres adapters; optional Adzuna JobSourcePort
   config/            pydantic-settings

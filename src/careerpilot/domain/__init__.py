@@ -9,11 +9,13 @@ from careerpilot.domain.entities.resume import Resume, ResumeContentType
 from careerpilot.domain.entities.user import User
 from careerpilot.domain.errors import (
     DomainError,
+    InvalidAgentError,
     InvalidJobError,
     InvalidProfileError,
     InvalidResumeError,
     InvalidUserError,
 )
+from careerpilot.domain.value_objects.agent_key import AgentKey
 from careerpilot.domain.value_objects.employment_type import EmploymentType
 from careerpilot.domain.value_objects.job_status import JobStatus
 from careerpilot.domain.value_objects.remote_policy import RemotePolicy
@@ -21,11 +23,13 @@ from careerpilot.domain.value_objects.source_key import SourceKey
 from careerpilot.domain.value_objects.user_status import UserStatus
 
 __all__ = [
+    "AgentKey",
     "CareerProfile",
     "DailyDiscovery",
     "DiscoverySelection",
     "DomainError",
     "EmploymentType",
+    "InvalidAgentError",
     "InvalidJobError",
     "InvalidProfileError",
     "InvalidResumeError",

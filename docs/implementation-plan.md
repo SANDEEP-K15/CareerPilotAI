@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M8 complete** after verification in this repository. Do not start
-M9 without explicit approval.
+Status: **M9 complete** after verification in this repository. Do not start
+M10 without explicit approval.
 
 ## Product goal
 
@@ -30,7 +30,7 @@ be present, or the conceptual primary source of jobs.
 | M6 | Career profile and resume foundation | Complete |
 | M7 | Deterministic matching engine | Complete |
 | M8 | Daily job discovery Temporal workflow | Complete |
-| M9 | Agent framework | Not started |
+| M9 | Agent framework | Complete |
 | M10 | Job Search Agent | Not started |
 | M11 | Job Ranking Agent | Not started |
 | M12 | Executive, Planner, Task Router | Not started |
@@ -169,6 +169,20 @@ Hermes, resume parsing, browser automation, additional providers.
 
 LLM, embeddings, agents, Hermes, resume tailoring, applications, browser
 automation, notifications, additional providers.
+
+## M9 scope (complete)
+
+- `AgentPort`, `AgentInput`, `AgentOutput`, `AgentContext`
+- `AgentKey` identifier and `AgentRegistry`
+- `ExecuteAgentTaskUseCase` with structured `AgentRunResult`
+- Application errors for duplicate/unknown agents and task validation
+- Unit tests with stub agents; no LLM or concrete job agents
+
+## Explicitly out of M9
+
+LLM providers, OpenRouter/Anthropic/OpenAI, JobSearchAgent, RankingAgent,
+planner/executive agents, Hermes, resume generation, application automation,
+embeddings, vector DB, new Temporal workflows.
 
 ## First production slice
 

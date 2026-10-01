@@ -1,5 +1,16 @@
 """Use cases depend on ports only. Provider-neutral."""
 
+from careerpilot.application.agents import (
+    AgentExecutionError,
+    AgentRegistry,
+    AgentRunResult,
+    AgentRunStatus,
+    AgentTask,
+    DuplicateAgentRegistrationError,
+    ExecuteAgentTaskUseCase,
+    InvalidAgentTaskError,
+    UnknownAgentError,
+)
 from careerpilot.application.errors import (
     ApplicationError,
     CareerProfileAlreadyExistsError,
@@ -53,13 +64,20 @@ from careerpilot.application.use_cases.search_and_ingest_jobs import (
 __all__ = [
     "AddResumeVersionCommand",
     "AddResumeVersionUseCase",
+    "AgentExecutionError",
+    "AgentRegistry",
+    "AgentRunResult",
+    "AgentRunStatus",
+    "AgentTask",
     "ApplicationError",
     "CareerProfileAlreadyExistsError",
     "CareerProfileNotFoundError",
     "CreateCareerProfileUseCase",
     "DiscoverDailyJobsCommand",
     "DiscoverDailyJobsUseCase",
+    "DuplicateAgentRegistrationError",
     "DuplicateJobSourceRegistrationError",
+    "ExecuteAgentTaskUseCase",
     "GetActiveResumeUseCase",
     "GetCareerProfileUseCase",
     "GetJobUseCase",
@@ -68,6 +86,7 @@ __all__ = [
     "IngestOutcome",
     "IngestRawJobResult",
     "IngestRawJobUseCase",
+    "InvalidAgentTaskError",
     "InvalidDiscoveryQueryError",
     "InvalidMatchQueryError",
     "JobAlreadyExistsError",
@@ -87,6 +106,7 @@ __all__ = [
     "SearchAndIngestJobsUseCase",
     "SearchJobsCommand",
     "SearchRegisteredSourcesUseCase",
+    "UnknownAgentError",
     "UnknownJobSourceError",
     "UserNotFoundError",
     "job_from_raw",

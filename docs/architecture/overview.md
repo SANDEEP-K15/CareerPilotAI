@@ -73,8 +73,9 @@ not abort the whole search when others succeed (from M5/M8).
 goal, not a required runtime, and not allowed to leak into domain or
 application code.
 
-AI agents (M9+) orchestrate reasoning through application services. They
-do not implement SQL, provider HTTP, or Temporal clients.
+AI agents (M9+) orchestrate reasoning through application services and
+registered `AgentPort` implementations. They do not implement SQL,
+provider HTTP, Temporal clients, or LLM SDK calls in M9.
 
 ## First production slice (M1–M8)
 

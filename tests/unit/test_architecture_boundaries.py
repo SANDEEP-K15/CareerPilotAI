@@ -69,13 +69,15 @@ def test_application_does_not_import_infrastructure_or_frameworks() -> None:
     assert violations == []
 
 
-def test_domain_and_application_do_not_mention_adzuna() -> None:
+def test_domain_and_application_do_not_mention_vendor_lock_in() -> None:
+    banned = ("adzuna", "openrouter", "anthropic", "openai", "temporalio")
     hits: list[str] = []
     for package in ("domain", "application", "ports"):
         for path in _python_files(package):
-            text = path.read_text(encoding="utf-8")
-            if "adzuna" in text.lower():
-                hits.append(str(path.relative_to(_ROOT)))
+            text = path.read_text(encoding="utf-8").lower()
+            for token in banned:
+                if token in text:
+                    hits.append(f"{path.relative_to(_ROOT)} mentions {token}")
     assert hits == []
 
 

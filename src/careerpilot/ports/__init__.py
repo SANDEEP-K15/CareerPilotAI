@@ -1,3 +1,4 @@
+from careerpilot.ports.agent import AgentContext, AgentInput, AgentOutput, AgentPort
 from careerpilot.ports.clock import ClockPort
 from careerpilot.ports.ids import IdGeneratorPort
 from careerpilot.ports.job_source import (
@@ -19,6 +20,10 @@ from careerpilot.ports.repositories import (
 )
 
 __all__ = [
+    "AgentContext",
+    "AgentInput",
+    "AgentOutput",
+    "AgentPort",
     "CareerProfileRepository",
     "ClockPort",
     "IdGeneratorPort",

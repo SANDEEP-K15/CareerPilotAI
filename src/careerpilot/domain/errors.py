@@ -30,3 +30,8 @@ class InvalidProfileError(DomainError):
 class InvalidResumeError(DomainError):
     def __init__(self, message: str) -> None:
         super().__init__(message, code="invalid_resume")
+
+
+class InvalidAgentError(DomainError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="invalid_agent")
