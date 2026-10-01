@@ -8,17 +8,24 @@ from careerpilot.infrastructure.persistence.postgres.database import to_sync_pos
 pytestmark = pytest.mark.integration
 
 
-def test_alembic_upgrade_creates_users_and_jobs(migrated_database: str) -> None:
+def test_alembic_upgrade_applies_current_migration_head(migrated_database: str) -> None:
     engine = create_engine(to_sync_postgres_url(migrated_database))
     try:
         inspector = inspect(engine)
         tables = set(inspector.get_table_names())
-        assert {"users", "jobs", "career_profiles", "resumes", "alembic_version"}.issubset(tables)
+        assert {
+            "users",
+            "jobs",
+            "career_profiles",
+            "resumes",
+            "daily_discoveries",
+            "alembic_version",
+        }.issubset(tables)
         with engine.connect() as connection:
             version = connection.execute(
                 text("SELECT version_num FROM alembic_version")
             ).scalar_one()
-        assert version == "m6_002_profiles_resumes"
+        assert version == "m8_003_daily_discoveries"
         unique = {item["name"] for item in inspector.get_unique_constraints("jobs")}
         assert "uq_jobs_source_external_id" in unique
         profile_unique = {
