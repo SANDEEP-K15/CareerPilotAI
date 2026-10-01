@@ -25,3 +25,4 @@ Supersede with a new ADR.
 | [0020](0020-daily-job-discovery-workflow.md) | Daily job discovery Temporal workflow | Accepted |
 | [0021](0021-agent-framework.md) | Provider-neutral agent framework | Accepted |
 | [0022](0022-job-search-agent.md) | Job Search Agent | Accepted |
+| [0023](0023-job-ranking-agent.md) | Job Ranking Agent | Accepted |

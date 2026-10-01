@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M10 complete** after verification in this repository. Do not start
-M11 without explicit approval.
+Status: **M11 complete** after verification in this repository. Do not start
+M12 without explicit approval.
 
 ## Product goal
 
@@ -32,7 +32,7 @@ be present, or the conceptual primary source of jobs.
 | M8 | Daily job discovery Temporal workflow | Complete |
 | M9 | Agent framework | Complete |
 | M10 | Job Search Agent | Complete |
-| M11 | Job Ranking Agent | Not started |
+| M11 | Job Ranking Agent | Complete |
 | M12 | Executive, Planner, Task Router | Not started |
 | M13 | LLM provider abstraction | Not started |
 | M14 | AI semantic matching | Not started |
@@ -197,6 +197,20 @@ embeddings, vector DB, new Temporal workflows.
 
 LLM providers, ranking AI, planner/executive agents, Hermes, resume
 generation, application automation, embeddings, vector DB, new providers.
+
+## M11 scope (complete)
+
+- `JobRankingAgent` (`job_ranking`) on `AgentPort`
+- Loads career profile by `AgentContext.user_id`
+- Ranks supplied `job_ids` via M7 `rank_matches` (no duplicated scoring)
+- Structured rankings with scores, reasons, and concerns
+- Deterministic ordering; safe handling of invalid queries
+- M5–M10 behavior unchanged
+
+## Explicitly out of M11
+
+LLM/embedding ranking, planner/executive agents, Hermes, resume tailoring,
+application automation, new providers.
 
 ## First production slice
 

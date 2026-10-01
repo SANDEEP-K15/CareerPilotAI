@@ -10,13 +10,12 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M10 — Job Search Agent.**
+**M11 — Job Ranking Agent.**
 
-Not yet implemented: ranking agents, LLM adapters, Hermes, or applications.
+Not yet implemented: planner/executive agents, LLM adapters, Hermes, or applications.
 
-`JobSearchAgent` runs registered job sources through the existing search
-and ingest use cases and returns structured results via `AgentPort`.
-M5–M9 behavior is unchanged. See ADR 0022.
+`JobRankingAgent` ranks supplied canonical jobs for a user's profile using
+M7 deterministic matching. M5–M10 behavior is unchanged. See ADR 0023.
 
 ## Principles
 
