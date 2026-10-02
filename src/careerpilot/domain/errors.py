@@ -35,3 +35,13 @@ class InvalidResumeError(DomainError):
 class InvalidAgentError(DomainError):
     def __init__(self, message: str) -> None:
         super().__init__(message, code="invalid_agent")
+
+
+class InvalidLlmProviderError(DomainError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="invalid_llm_provider")
+
+
+class InvalidLlmModelError(DomainError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="invalid_llm_model")

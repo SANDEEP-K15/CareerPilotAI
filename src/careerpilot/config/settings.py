@@ -52,6 +52,23 @@ class SecuritySettings(BaseSettings):
     secret_key: SecretStr = Field(default=SecretStr(_PLACEHOLDER_SECRET))
 
 
+class LlmSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="LLM__", extra="ignore")
+
+    provider: str | None = Field(
+        default=None,
+        description="Registered LLM provider key. Optional until a provider is wired.",
+    )
+    api_key: SecretStr | None = Field(
+        default=None,
+        description="Credential for infrastructure adapters. Unused by application logic in M13.",
+    )
+    default_model: str | None = Field(
+        default=None,
+        description="Default model id when callers omit one.",
+    )
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -67,6 +84,7 @@ class Settings(BaseSettings):
     database: DatabaseSettings = Field(default_factory=DatabaseSettings)
     security: SecuritySettings = Field(default_factory=SecuritySettings)
     temporal: TemporalSettings = Field(default_factory=TemporalSettings)
+    llm: LlmSettings = Field(default_factory=LlmSettings)
 
     @model_validator(mode="after")
     def production_must_not_use_placeholder_secret(self) -> Settings:

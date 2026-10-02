@@ -27,6 +27,13 @@ def test_production_rejects_placeholder_secret(monkeypatch: pytest.MonkeyPatch) 
         Settings()
 
 
+def test_settings_llm_defaults_are_optional(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("ENVIRONMENT", "test")
+    settings = Settings()
+    assert settings.llm.provider is None
+    assert settings.llm.default_model is None
+
+
 def test_database_url_must_be_postgres(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("ENVIRONMENT", "test")
     monkeypatch.setenv("DATABASE__URL", "sqlite+aiosqlite:///./test.db")

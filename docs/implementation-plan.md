@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M12 complete** after verification in this repository. Do not start
-M13 without explicit approval.
+Status: **M13 complete** after verification in this repository. Do not start
+M14 without explicit approval.
 
 ## Product goal
 
@@ -34,7 +34,7 @@ be present, or the conceptual primary source of jobs.
 | M10 | Job Search Agent | Complete |
 | M11 | Job Ranking Agent | Complete |
 | M12 | Executive, Planner, Task Router | Complete |
-| M13 | LLM provider abstraction | Not started |
+| M13 | LLM provider abstraction | Complete |
 | M14 | AI semantic matching | Not started |
 | M15 | Hermes integration (HTTP client only) | Not started |
 | M16 | Resume tailoring | Not started |
@@ -226,6 +226,22 @@ application automation, new providers.
 
 LLM providers, Hermes, resume tailoring, application automation, browser
 automation, embeddings, new job providers, new HTTP APIs.
+
+## M13 scope (complete)
+
+- `LlmPort`, `LlmRequest`, `LlmResponse`, `LlmUsage`, normalized `LlmError`
+- `LlmProviderKey`, `LlmModelId`, and `LlmProviderRegistry`
+- `LlmSettings` (`LLM__PROVIDER`, `LLM__API_KEY`, `LLM__DEFAULT_MODEL`)
+- `InvokeLlmUseCase` with structured `LlmCompletionResult`
+- `CostManagerPort` and provider-reported cost metadata only
+- In-memory fake provider and unit/contract tests
+- M0–M12 behavior unchanged
+
+## Explicitly out of M13
+
+OpenRouter/Anthropic/OpenAI adapters, real HTTP calls, AI matching, production
+agent prompts, resume generation, LLM planner/executive behavior, Hermes, new
+job providers, embeddings/vector DB.
 
 ## First production slice
 
