@@ -31,3 +31,4 @@ Supersede with a new ADR.
 | [0026](0026-hybrid-semantic-matching.md) | Hybrid semantic matching | Accepted |
 | [0027](0027-client-task-http-api.md) | Client task HTTP API | Accepted |
 | [0028](0028-resume-tailoring.md) | LLM resume tailoring | Accepted |
+| [0029](0029-application-preparation.md) | LLM application preparation | Accepted |

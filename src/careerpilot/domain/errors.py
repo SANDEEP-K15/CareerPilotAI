@@ -32,6 +32,11 @@ class InvalidResumeError(DomainError):
         super().__init__(message, code="invalid_resume")
 
 
+class InvalidApplicationPrepError(DomainError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="invalid_application_prep")
+
+
 class InvalidAgentError(DomainError):
     def __init__(self, message: str) -> None:
         super().__init__(message, code="invalid_agent")

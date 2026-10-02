@@ -5,6 +5,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
 from careerpilot.api.auth import ClientAuthenticationError
+from careerpilot.application.application_preparation import ApplicationPreparationFailedError
 from careerpilot.application.client_tasks.errors import (
     ClientTaskServiceUnavailableError,
     ClientTaskTimeoutError,
@@ -107,6 +108,15 @@ def register_exception_handlers(app: FastAPI) -> None:
     @app.exception_handler(ResumeTailoringFailedError)
     async def resume_tailoring_failed(
         _request: Request, exc: ResumeTailoringFailedError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=503,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(ApplicationPreparationFailedError)
+    async def application_preparation_failed(
+        _request: Request, exc: ApplicationPreparationFailedError
     ) -> JSONResponse:
         return JSONResponse(
             status_code=503,

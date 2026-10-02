@@ -1,5 +1,10 @@
 from __future__ import annotations
 
+from careerpilot.api.schemas.application_prep import (
+    ApplicationPrepInterviewQuestionResponse,
+    ApplicationPrepPackageResponse,
+    ApplicationPrepTalkingPointResponse,
+)
 from careerpilot.api.schemas.jobs import (
     JobResponse,
     JobSearchResponse,
@@ -13,6 +18,7 @@ from careerpilot.api.schemas.resume_tailoring import (
     ResumeTailoringResponse,
 )
 from careerpilot.application.use_cases.search_and_ingest_jobs import SearchAndIngestResult
+from careerpilot.domain.entities.application_prep import ApplicationPrepPackage
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.job_match import MatchReport
@@ -118,6 +124,34 @@ def resume_tailoring_to_response(
         ),
         llm_provider=result.llm_provider,
         llm_model=result.llm_model,
+        request_id=request_id,
+    )
+
+
+def application_prep_to_response(
+    package: ApplicationPrepPackage,
+    *,
+    request_id: str,
+) -> ApplicationPrepPackageResponse:
+    return ApplicationPrepPackageResponse(
+        user_id=package.user_id,
+        job_id=package.job_id,
+        source_resume_id=package.source_resume_id,
+        source_resume_version=package.source_resume_version,
+        guidance=package.guidance,
+        talking_points=tuple(
+            ApplicationPrepTalkingPointResponse(section=item.section, point=item.point)
+            for item in package.talking_points
+        ),
+        interview_questions=tuple(
+            ApplicationPrepInterviewQuestionResponse(
+                question=item.question,
+                focus=item.focus,
+            )
+            for item in package.interview_questions
+        ),
+        llm_provider=package.llm_provider,
+        llm_model=package.llm_model,
         request_id=request_id,
     )
 

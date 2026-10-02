@@ -10,14 +10,14 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M16 — Resume tailoring.**
+**M17 — Application preparation.**
 
-`POST /api/v1/users/{user_id}/resumes/tailor` uses M13 LLM to produce tailored
-resume text and a structured change summary from the active resume and a job.
-Original resume versions are never overwritten (ADR 0018 / 0028). M5–M15
-surfaces are unchanged.
+`POST /api/v1/users/{user_id}/applications/prepare` uses M13 LLM to produce
+interview questions, resume/job talking points, and concise guidance from
+profile, active resume, and a job. No submission or resume mutation (ADR 0029).
+M5–M16 surfaces are unchanged.
 
-Not yet implemented: real LLM vendor adapters, Telegram wiring, or application submission.
+Not yet implemented: approval workflow, browser automation, or application submission.
 
 ## Principles
 

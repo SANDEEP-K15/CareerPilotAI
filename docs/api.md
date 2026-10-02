@@ -236,3 +236,41 @@ Success (`200`):
 
 Flow: HTTP → `TailorResumeUseCase` → `ResumeTailoringService` → M13 LLM.
 
+## Application preparation (M17)
+
+Structured prep for a job application/interview. Does not submit applications
+or change stored resumes.
+
+`POST /api/v1/users/{user_id}/applications/prepare`
+
+Request:
+
+```json
+{ "job_id": "…" }
+```
+
+Success (`200`):
+
+```json
+{
+  "user_id": "…",
+  "job_id": "…",
+  "source_resume_id": "…",
+  "source_resume_version": 1,
+  "guidance": "…",
+  "talking_points": [ { "section": "…", "point": "…" } ],
+  "interview_questions": [ { "question": "…", "focus": "…" } ],
+  "llm_provider": "…",
+  "llm_model": "…",
+  "request_id": "…"
+}
+```
+
+| Status | `error.code` | When |
+|---|---|---|
+| 404 | `user_not_found` / `career_profile_not_found` / `resume_not_found` / `job_not_found` | Missing inputs |
+| 503 | `application_preparation_failed` | LLM failure or invalid structured output |
+| 400 | `not_configured` | Use case not wired on `create_app` |
+
+Flow: HTTP → `PrepareApplicationUseCase` → `ApplicationPreparationService` → M13 LLM.
+

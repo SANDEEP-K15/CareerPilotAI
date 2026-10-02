@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M16 complete** after verification in this repository. Do not start
-M17 without explicit approval.
+Status: **M17 complete** after verification in this repository. Do not start
+M18 without explicit approval.
 
 ## Product goal
 
@@ -38,7 +38,7 @@ be present, or the conceptual primary source of jobs.
 | M14 | AI semantic matching | Complete |
 | M15 | Hermes integration (HTTP client only) | Complete |
 | M16 | Resume tailoring | Complete |
-| M17 | Application preparation | Not started |
+| M17 | Application preparation | Complete |
 | M18 | Approval system | Not started |
 | M19 | Browser automation abstraction | Not started |
 | M20 | Application workflow | Not started |
@@ -287,6 +287,20 @@ Executive LLM behavior, M16+ features.
 Cover letters, browser automation, application submission, Telegram, new job
 providers, new LLM providers, orchestration changes, persisting tailored text
 as a new resume version automatically.
+
+## M17 scope (complete)
+
+- `ApplicationPreparationService` via M13 (task `application_preparation`)
+- JSON: `guidance`, `talking_points[]`, `interview_questions[]`
+- `PrepareApplicationUseCase` — profile, active resume, job; no submission
+- `POST /api/v1/users/{user_id}/applications/prepare`
+- `ApplicationPreparationFailedError` (503); cost via `CostManagerPort`
+- Unit/API tests; M5–M16 unchanged
+
+## Explicitly out of M17
+
+Application submission, browser automation, approval workflow, cover letters,
+Telegram, new job/LLM providers, resume mutation, orchestration changes.
 
 ## First production slice
 
