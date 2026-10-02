@@ -37,6 +37,11 @@ class InvalidApplicationPrepError(DomainError):
         super().__init__(message, code="invalid_application_prep")
 
 
+class InvalidApprovalRequestError(DomainError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="invalid_approval_request")
+
+
 class InvalidAgentError(DomainError):
     def __init__(self, message: str) -> None:
         super().__init__(message, code="invalid_agent")

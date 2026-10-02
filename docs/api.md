@@ -274,3 +274,35 @@ Success (`200`):
 
 Flow: HTTP → `PrepareApplicationUseCase` → `ApplicationPreparationService` → M13 LLM.
 
+## Approval requests (M18)
+
+Human approval for sensitive actions. **Approval does not submit or execute**
+anything; M20+ must consult approved requests explicitly.
+
+`POST /api/v1/users/{user_id}/approval-requests`
+
+```json
+{
+  "job_id": "…",
+  "action": "submit_application",
+  "reason": "…",
+  "expires_at": "2026-10-09T08:00:00Z"
+}
+```
+
+`expires_at` optional (default seven days from create).
+
+`GET /api/v1/users/{user_id}/approval-requests?status=pending&limit=50`  
+`GET /api/v1/users/{user_id}/approval-requests/{id}`  
+`POST .../{id}/approve` — body `{ "decision_note": "…" }`  
+`POST .../{id}/reject` — body `{ "decision_note": "…" }`
+
+| Status | `error.code` | When |
+|---|---|---|
+| 404 | `approval_request_not_found` / user/job not found | Missing row or scope |
+| 409 | `duplicate_pending_approval` | Pending row for same user/job/action |
+| 422 | `invalid_approval_transition` | Approve/reject on non-pending or expired |
+| 400 | `not_configured` | Approval API not wired on `create_app` |
+
+Statuses: `pending`, `approved`, `rejected`, `expired`.
+

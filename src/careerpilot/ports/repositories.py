@@ -4,11 +4,14 @@ from datetime import date
 from typing import Protocol
 from uuid import UUID
 
+from careerpilot.domain.entities.approval_request import ApprovalRequest
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.daily_discovery import DailyDiscovery
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume
 from careerpilot.domain.entities.user import User
+from careerpilot.domain.value_objects.approval_action import ApprovalAction
+from careerpilot.domain.value_objects.approval_status import ApprovalStatus
 from careerpilot.domain.value_objects.source_key import SourceKey
 
 
@@ -58,3 +61,28 @@ class DailyDiscoveryRepository(Protocol):
     async def get_by_user_and_run(self, user_id: UUID, run_on: date) -> DailyDiscovery | None: ...
 
     async def save(self, discovery: DailyDiscovery) -> DailyDiscovery: ...
+
+
+class ApprovalRequestRepository(Protocol):
+    async def add(self, request: ApprovalRequest) -> None: ...
+
+    async def update(self, request: ApprovalRequest) -> None: ...
+
+    async def get_by_id(self, request_id: UUID) -> ApprovalRequest | None: ...
+
+    async def get_for_user(self, user_id: UUID, request_id: UUID) -> ApprovalRequest | None: ...
+
+    async def list_by_user(
+        self,
+        user_id: UUID,
+        *,
+        status: ApprovalStatus | None = None,
+        limit: int = 50,
+    ) -> tuple[ApprovalRequest, ...]: ...
+
+    async def list_pending_for(
+        self,
+        user_id: UUID,
+        job_id: UUID,
+        action: ApprovalAction,
+    ) -> tuple[ApprovalRequest, ...]: ...

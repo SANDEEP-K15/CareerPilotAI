@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from uuid import UUID
 
+from careerpilot.domain.entities.approval_request import ApprovalRequest
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.daily_discovery import (
     DailyDiscovery,
@@ -11,12 +12,15 @@ from careerpilot.domain.entities.daily_discovery import (
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume, ResumeContentType
 from careerpilot.domain.entities.user import User
+from careerpilot.domain.value_objects.approval_action import ApprovalAction
+from careerpilot.domain.value_objects.approval_status import ApprovalStatus
 from careerpilot.domain.value_objects.employment_type import EmploymentType
 from careerpilot.domain.value_objects.job_status import JobStatus
 from careerpilot.domain.value_objects.remote_policy import RemotePolicy
 from careerpilot.domain.value_objects.source_key import SourceKey
 from careerpilot.domain.value_objects.user_status import UserStatus
 from careerpilot.infrastructure.persistence.postgres.models import (
+    ApprovalRequestModel,
     CareerProfileModel,
     DailyDiscoveryModel,
     JobModel,
@@ -252,4 +256,36 @@ def resume_from_model(row: ResumeModel) -> Resume:
         label=row.label,
         content_type=ResumeContentType(row.content_type),
         is_active=row.is_active,
+    )
+
+
+def approval_request_to_model(request: ApprovalRequest) -> ApprovalRequestModel:
+    return ApprovalRequestModel(
+        id=request.id,
+        user_id=request.user_id,
+        job_id=request.job_id,
+        action=request.action.value,
+        status=request.status.value,
+        reason=request.reason,
+        decision_note=request.decision_note,
+        expires_at=request.expires_at,
+        decided_at=request.decided_at,
+        created_at=request.created_at,
+        updated_at=request.updated_at,
+    )
+
+
+def approval_request_from_model(row: ApprovalRequestModel) -> ApprovalRequest:
+    return ApprovalRequest(
+        id=row.id,
+        user_id=row.user_id,
+        job_id=row.job_id,
+        action=ApprovalAction(row.action),
+        status=ApprovalStatus(row.status),
+        reason=row.reason,
+        decision_note=row.decision_note,
+        expires_at=row.expires_at,
+        decided_at=row.decided_at,
+        created_at=row.created_at,
+        updated_at=row.updated_at,
     )

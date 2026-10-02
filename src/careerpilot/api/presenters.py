@@ -5,6 +5,10 @@ from careerpilot.api.schemas.application_prep import (
     ApplicationPrepPackageResponse,
     ApplicationPrepTalkingPointResponse,
 )
+from careerpilot.api.schemas.approval_requests import (
+    ApprovalRequestListResponse,
+    ApprovalRequestResponse,
+)
 from careerpilot.api.schemas.jobs import (
     JobResponse,
     JobSearchResponse,
@@ -19,6 +23,7 @@ from careerpilot.api.schemas.resume_tailoring import (
 )
 from careerpilot.application.use_cases.search_and_ingest_jobs import SearchAndIngestResult
 from careerpilot.domain.entities.application_prep import ApplicationPrepPackage
+from careerpilot.domain.entities.approval_request import ApprovalRequest
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.job_match import MatchReport
@@ -152,6 +157,38 @@ def application_prep_to_response(
         ),
         llm_provider=package.llm_provider,
         llm_model=package.llm_model,
+        request_id=request_id,
+    )
+
+
+def approval_request_to_response(
+    item: ApprovalRequest,
+    *,
+    request_id: str,
+) -> ApprovalRequestResponse:
+    return ApprovalRequestResponse(
+        id=item.id,
+        user_id=item.user_id,
+        job_id=item.job_id,
+        action=item.action.value,
+        status=item.status.value,
+        reason=item.reason,
+        decision_note=item.decision_note,
+        expires_at=item.expires_at,
+        decided_at=item.decided_at,
+        created_at=item.created_at,
+        updated_at=item.updated_at,
+        request_id=request_id,
+    )
+
+
+def approval_request_list_to_response(
+    items: tuple[ApprovalRequest, ...],
+    *,
+    request_id: str,
+) -> ApprovalRequestListResponse:
+    return ApprovalRequestListResponse(
+        items=tuple(approval_request_to_response(item, request_id=request_id) for item in items),
         request_id=request_id,
     )
 

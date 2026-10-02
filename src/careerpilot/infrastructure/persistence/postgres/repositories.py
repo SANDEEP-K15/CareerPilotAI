@@ -10,6 +10,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from careerpilot.application.errors import (
     ApplicationError,
+    ApprovalRequestNotFoundError,
     CareerProfileAlreadyExistsError,
     CareerProfileNotFoundError,
     JobAlreadyExistsError,
@@ -17,16 +18,21 @@ from careerpilot.application.errors import (
     ResumeNotFoundError,
     ResumeVersionConflictError,
 )
+from careerpilot.domain.entities.approval_request import ApprovalRequest
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.daily_discovery import DailyDiscovery
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume
 from careerpilot.domain.entities.user import User
+from careerpilot.domain.value_objects.approval_action import ApprovalAction
+from careerpilot.domain.value_objects.approval_status import ApprovalStatus
 from careerpilot.domain.value_objects.job_status import JobStatus
 from careerpilot.domain.value_objects.source_key import SourceKey
 from careerpilot.infrastructure.persistence.postgres.mapping import (
     apply_job_to_model,
     apply_profile_to_model,
+    approval_request_from_model,
+    approval_request_to_model,
     discovery_from_model,
     discovery_to_model,
     job_from_model,
@@ -39,6 +45,7 @@ from careerpilot.infrastructure.persistence.postgres.mapping import (
     user_to_model,
 )
 from careerpilot.infrastructure.persistence.postgres.models import (
+    ApprovalRequestModel,
     CareerProfileModel,
     DailyDiscoveryModel,
     JobModel,
@@ -230,3 +237,80 @@ class SqlAlchemyDailyDiscoveryRepository:
                 code="discovery_not_persisted",
             )
         return stored
+
+
+class SqlAlchemyApprovalRequestRepository:
+    def __init__(self, session: AsyncSession) -> None:
+        self._session = session
+
+    async def add(self, request: ApprovalRequest) -> None:
+        row = approval_request_to_model(request)
+        self._session.add(row)
+        try:
+            await self._session.flush()
+        except IntegrityError as exc:
+            raise ApplicationError(
+                "Approval request could not be stored.",
+                code="approval_request_conflict",
+            ) from exc
+
+    async def update(self, request: ApprovalRequest) -> None:
+        row = await self._session.get(ApprovalRequestModel, request.id)
+        if row is None:
+            raise ApprovalRequestNotFoundError(str(request.id))
+        updated = approval_request_to_model(request)
+        row.status = updated.status
+        row.reason = updated.reason
+        row.decision_note = updated.decision_note
+        row.expires_at = updated.expires_at
+        row.decided_at = updated.decided_at
+        row.updated_at = updated.updated_at
+        await self._session.flush()
+
+    async def get_by_id(self, request_id: UUID) -> ApprovalRequest | None:
+        row = await self._session.get(ApprovalRequestModel, request_id)
+        return approval_request_from_model(row) if row is not None else None
+
+    async def get_for_user(self, user_id: UUID, request_id: UUID) -> ApprovalRequest | None:
+        stmt = select(ApprovalRequestModel).where(
+            ApprovalRequestModel.id == request_id,
+            ApprovalRequestModel.user_id == user_id,
+        )
+        result = await self._session.execute(stmt)
+        row = result.scalar_one_or_none()
+        return approval_request_from_model(row) if row is not None else None
+
+    async def list_by_user(
+        self,
+        user_id: UUID,
+        *,
+        status: ApprovalStatus | None = None,
+        limit: int = 50,
+    ) -> tuple[ApprovalRequest, ...]:
+        stmt = (
+            select(ApprovalRequestModel)
+            .where(ApprovalRequestModel.user_id == user_id)
+            .order_by(ApprovalRequestModel.created_at.desc())
+            .limit(limit)
+        )
+        if status is not None:
+            stmt = stmt.where(ApprovalRequestModel.status == status.value)
+        result = await self._session.execute(stmt)
+        rows = result.scalars().all()
+        return tuple(approval_request_from_model(row) for row in rows)
+
+    async def list_pending_for(
+        self,
+        user_id: UUID,
+        job_id: UUID,
+        action: ApprovalAction,
+    ) -> tuple[ApprovalRequest, ...]:
+        stmt = select(ApprovalRequestModel).where(
+            ApprovalRequestModel.user_id == user_id,
+            ApprovalRequestModel.job_id == job_id,
+            ApprovalRequestModel.action == action.value,
+            ApprovalRequestModel.status == ApprovalStatus.PENDING.value,
+        )
+        result = await self._session.execute(stmt)
+        rows = result.scalars().all()
+        return tuple(approval_request_from_model(row) for row in rows)

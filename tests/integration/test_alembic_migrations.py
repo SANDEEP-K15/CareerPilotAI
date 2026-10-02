@@ -19,13 +19,14 @@ def test_alembic_upgrade_applies_current_migration_head(migrated_database: str) 
             "career_profiles",
             "resumes",
             "daily_discoveries",
+            "approval_requests",
             "alembic_version",
         }.issubset(tables)
         with engine.connect() as connection:
             version = connection.execute(
                 text("SELECT version_num FROM alembic_version")
             ).scalar_one()
-        assert version == "m8_003_daily_discoveries"
+        assert version == "m18_004_approval_requests"
         unique = {item["name"] for item in inspector.get_unique_constraints("jobs")}
         assert "uq_jobs_source_external_id" in unique
         profile_unique = {

@@ -11,11 +11,14 @@ from careerpilot.application.errors import (
     ResumeNotFoundError,
     ResumeVersionConflictError,
 )
+from careerpilot.domain.entities.approval_request import ApprovalRequest
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.daily_discovery import DailyDiscovery
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.resume import Resume
 from careerpilot.domain.entities.user import User
+from careerpilot.domain.value_objects.approval_action import ApprovalAction
+from careerpilot.domain.value_objects.approval_status import ApprovalStatus
 from careerpilot.domain.value_objects.job_status import JobStatus
 from careerpilot.domain.value_objects.source_key import SourceKey
 
@@ -152,4 +155,56 @@ class InMemoryDailyDiscoveryRepository:
             return existing
         self._by_key[key] = discovery
         return discovery
+
+
+class InMemoryApprovalRequestRepository:
+    def __init__(self) -> None:
+        self._by_id: dict[UUID, ApprovalRequest] = {}
+
+    async def add(self, request: ApprovalRequest) -> None:
+        self._by_id[request.id] = request
+
+    async def update(self, request: ApprovalRequest) -> None:
+        if request.id not in self._by_id:
+            from careerpilot.application.errors import ApprovalRequestNotFoundError
+
+            raise ApprovalRequestNotFoundError(str(request.id))
+        self._by_id[request.id] = request
+
+    async def get_by_id(self, request_id: UUID) -> ApprovalRequest | None:
+        return self._by_id.get(request_id)
+
+    async def get_for_user(self, user_id: UUID, request_id: UUID) -> ApprovalRequest | None:
+        request = self._by_id.get(request_id)
+        if request is None or request.user_id != user_id:
+            return None
+        return request
+
+    async def list_by_user(
+        self,
+        user_id: UUID,
+        *,
+        status: ApprovalStatus | None = None,
+        limit: int = 50,
+    ) -> tuple[ApprovalRequest, ...]:
+        items = [item for item in self._by_id.values() if item.user_id == user_id]
+        if status is not None:
+            items = [item for item in items if item.status is status]
+        items.sort(key=lambda item: item.created_at, reverse=True)
+        return tuple(items[:limit])
+
+    async def list_pending_for(
+        self,
+        user_id: UUID,
+        job_id: UUID,
+        action: ApprovalAction,
+    ) -> tuple[ApprovalRequest, ...]:
+        return tuple(
+            item
+            for item in self._by_id.values()
+            if item.user_id == user_id
+            and item.job_id == job_id
+            and item.action is action
+            and item.status is ApprovalStatus.PENDING
+        )
 

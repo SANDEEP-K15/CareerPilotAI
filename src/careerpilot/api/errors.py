@@ -12,8 +12,11 @@ from careerpilot.application.client_tasks.errors import (
 )
 from careerpilot.application.errors import (
     ApplicationError,
+    ApprovalRequestNotFoundError,
     CareerProfileAlreadyExistsError,
     CareerProfileNotFoundError,
+    DuplicatePendingApprovalError,
+    InvalidApprovalTransitionError,
     JobNotFoundError,
     ResumeNotFoundError,
     UserNotFoundError,
@@ -102,6 +105,33 @@ def register_exception_handlers(app: FastAPI) -> None:
     async def job_not_found(_request: Request, exc: JobNotFoundError) -> JSONResponse:
         return JSONResponse(
             status_code=404,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(ApprovalRequestNotFoundError)
+    async def approval_request_not_found(
+        _request: Request, exc: ApprovalRequestNotFoundError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=404,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(DuplicatePendingApprovalError)
+    async def duplicate_pending_approval(
+        _request: Request, exc: DuplicatePendingApprovalError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=409,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(InvalidApprovalTransitionError)
+    async def invalid_approval_transition(
+        _request: Request, exc: InvalidApprovalTransitionError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=422,
             content=error_body(_request, code=exc.code, message=exc.message),
         )
 

@@ -10,14 +10,14 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M17 — Application preparation.**
+**M18 — Approval system.**
 
-`POST /api/v1/users/{user_id}/applications/prepare` uses M13 LLM to produce
-interview questions, resume/job talking points, and concise guidance from
-profile, active resume, and a job. No submission or resume mutation (ADR 0029).
-M5–M16 surfaces are unchanged.
+Explicit approval requests for sensitive actions (starting with
+`submit_application`) linked to user and job. Approve/reject/expire lifecycle
+is durable and deterministic; **approval does not execute any action** (ADR 0030).
+M5–M17 surfaces are unchanged.
 
-Not yet implemented: approval workflow, browser automation, or application submission.
+Not yet implemented: browser automation, application submission, or Temporal approval signals.
 
 ## Principles
 

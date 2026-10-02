@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M17 complete** after verification in this repository. Do not start
-M18 without explicit approval.
+Status: **M18 complete** after verification in this repository. Do not start
+M19 without explicit approval.
 
 ## Product goal
 
@@ -39,7 +39,7 @@ be present, or the conceptual primary source of jobs.
 | M15 | Hermes integration (HTTP client only) | Complete |
 | M16 | Resume tailoring | Complete |
 | M17 | Application preparation | Complete |
-| M18 | Approval system | Not started |
+| M18 | Approval system | Complete |
 | M19 | Browser automation abstraction | Not started |
 | M20 | Application workflow | Not started |
 | M21 | Evaluation framework | Not started |
@@ -301,6 +301,20 @@ as a new resume version automatically.
 
 Application submission, browser automation, approval workflow, cover letters,
 Telegram, new job/LLM providers, resume mutation, orchestration changes.
+
+## M18 scope (complete)
+
+- `ApprovalRequest` domain model and deterministic lifecycle transitions
+- `ApprovalRequestRepository` (in-memory + PostgreSQL/Alembic `approval_requests`)
+- Create, list, get, approve, reject use cases; expiration on read
+- `POST/GET /api/v1/users/{user_id}/approval-requests` (+ approve/reject)
+- Approval records intent only; no submission or automation
+- Unit/API tests; M5–M17 unchanged
+
+## Explicitly out of M18
+
+Browser automation, application submission/execution, Telegram, Temporal signals,
+new LLM/job providers, resume mutation, orchestration changes.
 
 ## First production slice
 

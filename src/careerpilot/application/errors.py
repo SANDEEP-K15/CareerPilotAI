@@ -63,3 +63,26 @@ class ResumeVersionConflictError(ApplicationError):
         )
         self.user_id = user_id
         self.version = version
+
+
+class ApprovalRequestNotFoundError(ApplicationError):
+    def __init__(self, request_id: str) -> None:
+        super().__init__(
+            f"Approval request {request_id} was not found.",
+            code="approval_request_not_found",
+        )
+        self.request_id = request_id
+
+
+class DuplicatePendingApprovalError(ApplicationError):
+    def __init__(self, user_id: str, job_id: str, action: str) -> None:
+        super().__init__(
+            f"A pending approval already exists for user {user_id}, job {job_id}, "
+            f"action {action}.",
+            code="duplicate_pending_approval",
+        )
+
+
+class InvalidApprovalTransitionError(ApplicationError):
+    def __init__(self, message: str) -> None:
+        super().__init__(message, code="invalid_approval_transition")

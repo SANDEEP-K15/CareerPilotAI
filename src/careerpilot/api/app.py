@@ -3,9 +3,11 @@ from __future__ import annotations
 from fastapi import FastAPI
 
 from careerpilot.api.deps import ProfileApi
+from careerpilot.api.deps_approvals import ApprovalApi
 from careerpilot.api.errors import register_exception_handlers
 from careerpilot.api.middleware import RequestIdMiddleware
 from careerpilot.api.v1.application_preparation import router as application_preparation_router
+from careerpilot.api.v1.approval_requests import router as approval_requests_router
 from careerpilot.api.v1.client_tasks import router as client_tasks_router
 from careerpilot.api.v1.jobs import router as jobs_router
 from careerpilot.api.v1.matches import router as matches_router
@@ -28,6 +30,7 @@ def create_app(
     client_api_settings: ClientApiSettings | None = None,
     tailor_resume: TailorResumeUseCase | None = None,
     prepare_application: PrepareApplicationUseCase | None = None,
+    approval_api: ApprovalApi | None = None,
 ) -> FastAPI:
     """ASGI app. Job sources are injected by the caller; none are hard-coded."""
     app = FastAPI(title="CareerPilot AI", version="0.1.0", debug=False)
@@ -38,6 +41,7 @@ def create_app(
     app.state.client_api_settings = client_api_settings
     app.state.tailor_resume = tailor_resume
     app.state.prepare_application = prepare_application
+    app.state.approval_api = approval_api
     app.add_middleware(RequestIdMiddleware)
     register_exception_handlers(app)
     app.include_router(jobs_router, prefix="/api/v1")
@@ -46,4 +50,5 @@ def create_app(
     app.include_router(client_tasks_router, prefix="/api/v1")
     app.include_router(resume_tailoring_router, prefix="/api/v1")
     app.include_router(application_preparation_router, prefix="/api/v1")
+    app.include_router(approval_requests_router, prefix="/api/v1")
     return app
