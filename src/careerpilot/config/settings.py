@@ -69,6 +69,16 @@ class LlmSettings(BaseSettings):
     )
 
 
+class ClientApiSettings(BaseSettings):
+    model_config = SettingsConfigDict(env_prefix="CLIENT__", extra="ignore")
+
+    api_token: SecretStr | None = Field(
+        default=None,
+        description="Bearer token for external client APIs (e.g. Hermes).",
+    )
+    task_timeout_seconds: float = Field(default=30.0, ge=1.0, le=300.0)
+
+
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env",
@@ -85,6 +95,7 @@ class Settings(BaseSettings):
     security: SecuritySettings = Field(default_factory=SecuritySettings)
     temporal: TemporalSettings = Field(default_factory=TemporalSettings)
     llm: LlmSettings = Field(default_factory=LlmSettings)
+    client_api: ClientApiSettings = Field(default_factory=ClientApiSettings)
 
     @model_validator(mode="after")
     def production_must_not_use_placeholder_secret(self) -> Settings:
@@ -93,6 +104,16 @@ class Settings(BaseSettings):
             if not secret or secret == _PLACEHOLDER_SECRET:
                 raise ValueError(
                     "SECURITY__SECRET_KEY must be set to a unique value in "
+                    f"{self.environment} environments."
+                )
+            client_token = (
+                self.client_api.api_token.get_secret_value()
+                if self.client_api.api_token is not None
+                else ""
+            )
+            if not client_token:
+                raise ValueError(
+                    "CLIENT__API_TOKEN must be set in "
                     f"{self.environment} environments."
                 )
         return self

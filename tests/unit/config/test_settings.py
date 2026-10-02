@@ -27,6 +27,13 @@ def test_production_rejects_placeholder_secret(monkeypatch: pytest.MonkeyPatch) 
         Settings()
 
 
+def test_staging_requires_client_api_token(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("ENVIRONMENT", "staging")
+    monkeypatch.setenv("SECURITY__SECRET_KEY", "unique-staging-secret-value")
+    with pytest.raises(ValidationError):
+        Settings()
+
+
 def test_settings_llm_defaults_are_optional(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("ENVIRONMENT", "test")
     settings = Settings()

@@ -4,6 +4,11 @@ from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 
+from careerpilot.api.auth import ClientAuthenticationError
+from careerpilot.application.client_tasks.errors import (
+    ClientTaskServiceUnavailableError,
+    ClientTaskTimeoutError,
+)
 from careerpilot.application.errors import (
     ApplicationError,
     CareerProfileAlreadyExistsError,
@@ -33,6 +38,33 @@ def error_body(request: Request, *, code: str, message: str) -> dict[str, object
 
 
 def register_exception_handlers(app: FastAPI) -> None:
+    @app.exception_handler(ClientAuthenticationError)
+    async def client_unauthorized(
+        _request: Request, exc: ClientAuthenticationError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=401,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(ClientTaskTimeoutError)
+    async def client_task_timeout(
+        _request: Request, exc: ClientTaskTimeoutError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=504,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(ClientTaskServiceUnavailableError)
+    async def client_task_unavailable(
+        _request: Request, exc: ClientTaskServiceUnavailableError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=503,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
     @app.exception_handler(UnknownJobSourceError)
     async def unknown_source(_request: Request, exc: UnknownJobSourceError) -> JSONResponse:
         return JSONResponse(

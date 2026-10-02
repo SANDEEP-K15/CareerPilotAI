@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M14 complete** after verification in this repository. Do not start
-M15 without explicit approval.
+Status: **M15 complete** after verification in this repository. Do not start
+M16 without explicit approval.
 
 ## Product goal
 
@@ -36,7 +36,7 @@ be present, or the conceptual primary source of jobs.
 | M12 | Executive, Planner, Task Router | Complete |
 | M13 | LLM provider abstraction | Complete |
 | M14 | AI semantic matching | Complete |
-| M15 | Hermes integration (HTTP client only) | Not started |
+| M15 | Hermes integration (HTTP client only) | Complete |
 | M16 | Resume tailoring | Not started |
 | M17 | Application preparation | Not started |
 | M18 | Approval system | Not started |
@@ -257,6 +257,21 @@ job providers, embeddings/vector DB.
 Vendor SDKs, real API credentials, embeddings/vector DB, resume tailoring,
 Executive/Planner LLM wiring, Hermes, applications, browser automation, new
 job providers, changes to M7 HTTP matching.
+
+## M15 scope (complete)
+
+- `POST /api/v1/client/tasks` with Bearer auth (`CLIENT__API_TOKEN`)
+- Request/response DTOs, `X-Request-ID` / `correlation_id`
+- `SubmitClientTaskUseCase` → M12 `Executive` with timeout handling
+- Structured HTTP errors (401, 503, 504) and orchestration failure bodies
+- `CareerPilotApiClient` for Hermes-side HTTP (infrastructure only)
+- Unit/API tests; M5–M14 behavior unchanged
+
+## Explicitly out of M15
+
+Telegram-specific logic, LLM provider changes, new job providers, browser
+automation, application submission, resume tailoring, duplicate orchestration,
+Executive LLM behavior, M16+ features.
 
 ## First production slice
 

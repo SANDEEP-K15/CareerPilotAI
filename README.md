@@ -10,13 +10,14 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M14 — AI semantic matching.**
+**M15 — Hermes HTTP integration (client task API).**
 
-Not yet implemented: real LLM vendor adapters, Hermes, or applications.
+Authenticated `POST /api/v1/client/tasks` routes external clients (Hermes per
+ADR 0008) into M12 orchestration. `CareerPilotApiClient` is the outbound HTTP
+boundary; CareerPilot business logic stays in application/domain. M5–M14
+surfaces are unchanged. See ADR 0027.
 
-Hybrid matching augments M7 deterministic scores with parsed LLM semantic
-alignment (70/30 blend) and falls back when the LLM fails. M7 core scoring
-and M5–M13 surfaces are unchanged. See ADR 0026.
+Not yet implemented: real LLM vendor adapters, Telegram wiring, or applications.
 
 ## Principles
 

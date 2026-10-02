@@ -145,3 +145,55 @@ Not an HTTP route. `DailyJobDiscoveryWorkflow` stores one
 ingest and deterministic matching. It does not change
 `POST /api/v1/jobs/search` or `GET /api/v1/users/{user_id}/matches`.
 
+## Client tasks (M15)
+
+External clients (Hermes per ADR 0008) submit user work through CareerPilot
+orchestration only. No client-specific routes or Telegram logic in domain or
+application layers.
+
+`POST /api/v1/client/tasks`
+
+Headers:
+
+- `Authorization: Bearer <CLIENT__API_TOKEN>` (required when client API is wired)
+- `X-Request-ID` optional; echoed on response
+
+Request:
+
+```json
+{
+  "user_id": "…",
+  "intent": "helper",
+  "parameters": { "value": 3 },
+  "correlation_id": "corr-hermes-1"
+}
+```
+
+Success (`200`, orchestration succeeded):
+
+```json
+{
+  "request_id": "…",
+  "correlation_id": "…",
+  "status": "success",
+  "plan_id": "direct_helper",
+  "summary": "…",
+  "steps": [ { "step_id": "…", "agent": "helper", "status": "success" } ],
+  "output": { "value": 3 },
+  "error": null
+}
+```
+
+Orchestration failure is still `200` with `status: failed` and structured
+`error`. Transport errors:
+
+| Status | `error.code` | When |
+|---|---|---|
+| 401 | `unauthorized` | Missing or invalid Bearer token |
+| 503 | `client_task_unavailable` | Token OK but orchestration not wired |
+| 504 | `client_task_timeout` | Executive exceeded `CLIENT__TASK_TIMEOUT_SECONDS` |
+
+Flow: HTTP → `SubmitClientTaskUseCase` → M12 `Executive` → agents.
+
+Outbound client: `CareerPilotApiClient` (`careerpilot.infrastructure.http`).
+
