@@ -10,13 +10,13 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M13 — LLM provider abstraction.**
+**M14 — AI semantic matching.**
 
-Not yet implemented: real vendor adapters, AI semantic matching, Hermes, or applications.
+Not yet implemented: real LLM vendor adapters, Hermes, or applications.
 
-`LlmPort`, registry, configuration, and `InvokeLlmUseCase` provide
-provider-neutral completions with token usage and optional provider-reported
-cost metadata. No HTTP integrations or M0–M12 behavior changes. See ADR 0025.
+Hybrid matching augments M7 deterministic scores with parsed LLM semantic
+alignment (70/30 blend) and falls back when the LLM fails. M7 core scoring
+and M5–M13 surfaces are unchanged. See ADR 0026.
 
 ## Principles
 

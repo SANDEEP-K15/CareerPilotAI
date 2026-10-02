@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M13 complete** after verification in this repository. Do not start
-M14 without explicit approval.
+Status: **M14 complete** after verification in this repository. Do not start
+M15 without explicit approval.
 
 ## Product goal
 
@@ -35,7 +35,7 @@ be present, or the conceptual primary source of jobs.
 | M11 | Job Ranking Agent | Complete |
 | M12 | Executive, Planner, Task Router | Complete |
 | M13 | LLM provider abstraction | Complete |
-| M14 | AI semantic matching | Not started |
+| M14 | AI semantic matching | Complete |
 | M15 | Hermes integration (HTTP client only) | Not started |
 | M16 | Resume tailoring | Not started |
 | M17 | Application preparation | Not started |
@@ -242,6 +242,21 @@ automation, embeddings, new job providers, new HTTP APIs.
 OpenRouter/Anthropic/OpenAI adapters, real HTTP calls, AI matching, production
 agent prompts, resume generation, LLM planner/executive behavior, Hermes, new
 job providers, embeddings/vector DB.
+
+## M14 scope (complete)
+
+- `SemanticMatchingService` via M13 `InvokeLlmUseCase`
+- Structured JSON LLM contract and parser
+- Prompt construction from `CareerProfile`, `Job`, and M7 baseline
+- `combine_match_scores` / `rank_augmented_matches` hybrid ranking
+- `SemanticMatchJobsUseCase` with LLM failure fallback
+- Unit tests with `FakeLlmProvider`; M7 `match_job` unchanged
+
+## Explicitly out of M14
+
+Vendor SDKs, real API credentials, embeddings/vector DB, resume tailoring,
+Executive/Planner LLM wiring, Hermes, applications, browser automation, new
+job providers, changes to M7 HTTP matching.
 
 ## First production slice
 

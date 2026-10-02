@@ -28,3 +28,4 @@ Supersede with a new ADR.
 | [0023](0023-job-ranking-agent.md) | Job Ranking Agent | Accepted |
 | [0024](0024-orchestration-executive-planner-router.md) | Executive, planner, task router | Accepted |
 | [0025](0025-llm-provider-abstraction.md) | LLM provider abstraction | Accepted |
+| [0026](0026-hybrid-semantic-matching.md) | Hybrid semantic matching | Accepted |
