@@ -13,10 +13,12 @@ from careerpilot.application.errors import (
     ApplicationError,
     CareerProfileAlreadyExistsError,
     CareerProfileNotFoundError,
+    JobNotFoundError,
     ResumeNotFoundError,
     UserNotFoundError,
 )
 from careerpilot.application.job_sources.errors import UnknownJobSourceError
+from careerpilot.application.resume_tailoring import ResumeTailoringFailedError
 from careerpilot.application.use_cases.match_jobs import InvalidMatchQueryError
 from careerpilot.domain.errors import DomainError
 from careerpilot.ports.job_source import InvalidJobSearchQueryError
@@ -92,6 +94,22 @@ def register_exception_handlers(app: FastAPI) -> None:
     async def resume_not_found(_request: Request, exc: ResumeNotFoundError) -> JSONResponse:
         return JSONResponse(
             status_code=404,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(JobNotFoundError)
+    async def job_not_found(_request: Request, exc: JobNotFoundError) -> JSONResponse:
+        return JSONResponse(
+            status_code=404,
+            content=error_body(_request, code=exc.code, message=exc.message),
+        )
+
+    @app.exception_handler(ResumeTailoringFailedError)
+    async def resume_tailoring_failed(
+        _request: Request, exc: ResumeTailoringFailedError
+    ) -> JSONResponse:
+        return JSONResponse(
+            status_code=503,
             content=error_body(_request, code=exc.code, message=exc.message),
         )
 

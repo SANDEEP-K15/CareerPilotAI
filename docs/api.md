@@ -197,3 +197,42 @@ Flow: HTTP → `SubmitClientTaskUseCase` → M12 `Executive` → agents.
 
 Outbound client: `CareerPilotApiClient` (`careerpilot.infrastructure.http`).
 
+## Resume tailoring (M16)
+
+Tailors the user's **active** resume for a selected job. Stored resume versions
+are never overwritten; saving a new version remains `POST .../resumes` (M6).
+
+`POST /api/v1/users/{user_id}/resumes/tailor`
+
+Request:
+
+```json
+{ "job_id": "…" }
+```
+
+Success (`200`):
+
+```json
+{
+  "user_id": "…",
+  "job_id": "…",
+  "source_resume_id": "…",
+  "source_resume_version": 1,
+  "tailored_content": "…",
+  "changes": [
+    { "section": "summary", "description": "…" }
+  ],
+  "llm_provider": "…",
+  "llm_model": "…",
+  "request_id": "…"
+}
+```
+
+| Status | `error.code` | When |
+|---|---|---|
+| 404 | `user_not_found` / `career_profile_not_found` / `resume_not_found` / `job_not_found` | Missing inputs |
+| 503 | `resume_tailoring_failed` | LLM failure or invalid structured output |
+| 400 | `not_configured` | Tailoring use case not wired on `create_app` |
+
+Flow: HTTP → `TailorResumeUseCase` → `ResumeTailoringService` → M13 LLM.
+

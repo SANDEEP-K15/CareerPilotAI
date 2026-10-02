@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M15 complete** after verification in this repository. Do not start
-M16 without explicit approval.
+Status: **M16 complete** after verification in this repository. Do not start
+M17 without explicit approval.
 
 ## Product goal
 
@@ -37,7 +37,7 @@ be present, or the conceptual primary source of jobs.
 | M13 | LLM provider abstraction | Complete |
 | M14 | AI semantic matching | Complete |
 | M15 | Hermes integration (HTTP client only) | Complete |
-| M16 | Resume tailoring | Not started |
+| M16 | Resume tailoring | Complete |
 | M17 | Application preparation | Not started |
 | M18 | Approval system | Not started |
 | M19 | Browser automation abstraction | Not started |
@@ -272,6 +272,21 @@ job providers, changes to M7 HTTP matching.
 Telegram-specific logic, LLM provider changes, new job providers, browser
 automation, application submission, resume tailoring, duplicate orchestration,
 Executive LLM behavior, M16+ features.
+
+## M16 scope (complete)
+
+- `ResumeTailoringService` via M13 `InvokeLlmUseCase` (task `resume_tailoring`)
+- JSON contract: `tailored_content`, `changes[]` with section/description
+- `TailorResumeUseCase` — active resume + job + profile; no version mutation
+- `POST /api/v1/users/{user_id}/resumes/tailor` with structured response
+- `ResumeTailoringFailedError` (503) on LLM/parse failures; cost via `CostManagerPort`
+- Unit/API tests; M5–M15 unchanged
+
+## Explicitly out of M16
+
+Cover letters, browser automation, application submission, Telegram, new job
+providers, new LLM providers, orchestration changes, persisting tailored text
+as a new resume version automatically.
 
 ## First production slice
 

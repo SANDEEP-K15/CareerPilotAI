@@ -8,11 +8,16 @@ from careerpilot.api.schemas.jobs import (
 )
 from careerpilot.api.schemas.matches import JobMatchResponse, MatchReportResponse
 from careerpilot.api.schemas.profiles import CareerProfileResponse, ResumeResponse
+from careerpilot.api.schemas.resume_tailoring import (
+    ResumeTailoringChangeResponse,
+    ResumeTailoringResponse,
+)
 from careerpilot.application.use_cases.search_and_ingest_jobs import SearchAndIngestResult
 from careerpilot.domain.entities.career_profile import CareerProfile
 from careerpilot.domain.entities.job import Job
 from careerpilot.domain.entities.job_match import MatchReport
 from careerpilot.domain.entities.resume import Resume
+from careerpilot.domain.entities.resume_tailoring import ResumeTailoringResult
 
 
 def job_to_response(job: Job) -> JobResponse:
@@ -93,6 +98,27 @@ def resume_to_response(resume: Resume) -> ResumeResponse:
         content_type=resume.content_type.value,
         is_active=resume.is_active,
         created_at=resume.created_at,
+    )
+
+
+def resume_tailoring_to_response(
+    result: ResumeTailoringResult,
+    *,
+    request_id: str,
+) -> ResumeTailoringResponse:
+    return ResumeTailoringResponse(
+        user_id=result.user_id,
+        job_id=result.job_id,
+        source_resume_id=result.source_resume_id,
+        source_resume_version=result.source_resume_version,
+        tailored_content=result.tailored_content,
+        changes=tuple(
+            ResumeTailoringChangeResponse(section=item.section, description=item.description)
+            for item in result.changes
+        ),
+        llm_provider=result.llm_provider,
+        llm_model=result.llm_model,
+        request_id=request_id,
     )
 
 

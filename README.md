@@ -10,14 +10,14 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M15 — Hermes HTTP integration (client task API).**
+**M16 — Resume tailoring.**
 
-Authenticated `POST /api/v1/client/tasks` routes external clients (Hermes per
-ADR 0008) into M12 orchestration. `CareerPilotApiClient` is the outbound HTTP
-boundary; CareerPilot business logic stays in application/domain. M5–M14
-surfaces are unchanged. See ADR 0027.
+`POST /api/v1/users/{user_id}/resumes/tailor` uses M13 LLM to produce tailored
+resume text and a structured change summary from the active resume and a job.
+Original resume versions are never overwritten (ADR 0018 / 0028). M5–M15
+surfaces are unchanged.
 
-Not yet implemented: real LLM vendor adapters, Telegram wiring, or applications.
+Not yet implemented: real LLM vendor adapters, Telegram wiring, or application submission.
 
 ## Principles
 
