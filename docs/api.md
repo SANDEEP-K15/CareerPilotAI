@@ -306,3 +306,11 @@ anything; M20+ must consult approved requests explicitly.
 
 Statuses: `pending`, `approved`, `rejected`, `expired`.
 
+## Browser automation (M19)
+
+No HTTP routes in M19. Automation is accessed through `BrowserAutomationPort` /
+`BrowserSessionPort` (`careerpilot.ports.browser`) for future M20 workflows.
+Vendor browser SDKs stay in infrastructure adapters; use
+`FakeBrowserAutomationPort` in tests. Automation does not submit applications
+or bypass approvals.
+

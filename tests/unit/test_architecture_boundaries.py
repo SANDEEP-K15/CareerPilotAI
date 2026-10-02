@@ -70,7 +70,13 @@ def test_application_does_not_import_infrastructure_or_frameworks() -> None:
 
 
 def test_domain_and_application_do_not_mention_vendor_lock_in() -> None:
-    banned = ("adzuna", "openrouter", "anthropic", "openai", "temporalio")
+    banned = (
+        "adzuna",
+        "openrouter",
+        "anthropic",
+        "openai",
+        "temporalio",
+    )
     hits: list[str] = []
     for package in ("domain", "application", "ports"):
         for path in _python_files(package):

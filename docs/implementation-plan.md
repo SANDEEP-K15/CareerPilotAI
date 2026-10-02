@@ -1,7 +1,7 @@
 # Implementation plan
 
-Status: **M18 complete** after verification in this repository. Do not start
-M19 without explicit approval.
+Status: **M19 complete** after verification in this repository. Do not start
+M20 without explicit approval.
 
 ## Product goal
 
@@ -40,7 +40,7 @@ be present, or the conceptual primary source of jobs.
 | M16 | Resume tailoring | Complete |
 | M17 | Application preparation | Complete |
 | M18 | Approval system | Complete |
-| M19 | Browser automation abstraction | Not started |
+| M19 | Browser automation abstraction | Complete |
 | M20 | Application workflow | Not started |
 | M21 | Evaluation framework | Not started |
 | M22 | Production hardening | Not started |
@@ -315,6 +315,21 @@ Telegram, new job/LLM providers, resume mutation, orchestration changes.
 
 Browser automation, application submission/execution, Telegram, Temporal signals,
 new LLM/job providers, resume mutation, orchestration changes.
+
+## M19 scope (complete)
+
+- `BrowserAutomationPort` / `BrowserSessionPort` with navigation, inspection,
+  form interaction, screenshot artifacts, and session lifecycle
+- `BrowserError` / `BrowserErrorCode` with retryable classification and
+  `normalize_browser_failure`
+- `BrowserProviderKey` and validation helpers in `ports/browser.py`
+- `FakeBrowserAutomationPort` for contract tests (no real browser)
+- Architecture guardrails; M5–M18 unchanged; no submission or approval changes
+
+## Explicitly out of M19
+
+Real browser drivers, application submission, approval workflow changes, HTTP
+API, Telegram, new LLM/job providers, orchestration changes.
 
 ## First production slice
 

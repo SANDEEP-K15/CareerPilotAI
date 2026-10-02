@@ -33,3 +33,4 @@ Supersede with a new ADR.
 | [0028](0028-resume-tailoring.md) | LLM resume tailoring | Accepted |
 | [0029](0029-application-preparation.md) | LLM application preparation | Accepted |
 | [0030](0030-explicit-approval-requests.md) | Explicit approval requests | Accepted |
+| [0031](0031-browser-automation-port.md) | Browser automation port | Accepted |

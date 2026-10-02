@@ -10,14 +10,14 @@ interfaces. They must not contain CareerPilot business logic.
 
 ## Current milestone
 
-**M18 — Approval system.**
+**M19 — Browser automation abstraction.**
 
-Explicit approval requests for sensitive actions (starting with
-`submit_application`) linked to user and job. Approve/reject/expire lifecycle
-is durable and deterministic; **approval does not execute any action** (ADR 0030).
-M5–M17 surfaces are unchanged.
+Provider-neutral `BrowserAutomationPort` / `BrowserSessionPort` define
+navigation, page inspection, form interaction, and screenshot artifacts with
+structured errors. The in-memory fake supports contract tests; no real browser
+or application submission (ADR 0031). M5–M18 unchanged.
 
-Not yet implemented: browser automation, application submission, or Temporal approval signals.
+Not yet implemented: real browser drivers, application workflow (M20), or submission execution.
 
 ## Principles
 
