@@ -19,6 +19,17 @@ or application submission (ADR 0031). M5–M18 unchanged.
 
 Not yet implemented: real browser drivers, application workflow (M20), or submission execution.
 
+## What works today
+
+| Area | Status |
+|---|---|
+| Domain, use cases, ports, Postgres repositories, Alembic migrations | Implemented and tested (unit, contract, integration) |
+| Adzuna job source | Implemented adapter; needs Adzuna credentials to call the live API |
+| LLM | Provider-neutral `LlmPort` plus an Anthropic adapter (`infrastructure/llm`), selected with `LLM__PROVIDER=anthropic`. Tested offline through the real SDK client with an in-memory transport; no live call is made in the test suite |
+| Semantic matching, resume tailoring, application preparation | Use cases implemented against `LlmPort`; exercised with fakes in tests |
+| HTTP API | `create_app()` takes its use cases as arguments; there is no composition root or ASGI entry point yet, so the API is exercised through tests only |
+| Ranking quality | Not yet evaluated (see `evaluation/`) |
+
 ## Principles
 
 - Deterministic software for deterministic work. AI only where reasoning
